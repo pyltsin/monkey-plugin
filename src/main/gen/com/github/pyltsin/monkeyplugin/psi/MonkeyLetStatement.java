@@ -10,7 +10,4 @@ public interface MonkeyLetStatement extends PsiElement {
   @NotNull
   List<MonkeyExpr> getExprList();
 
-  @Nullable
-  MonkeyFuncDefinition getFuncDefinition();
-
 }
