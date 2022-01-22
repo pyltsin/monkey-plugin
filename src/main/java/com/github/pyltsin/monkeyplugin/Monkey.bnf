@@ -1,0 +1,144 @@
+{
+  parserClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParser"
+  parserUtilClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParserUtil"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Monkey"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.github.pyltsin.monkeyplugin.psi"
+  psiImplPackage="com.github.pyltsin.monkeyplugin.psi.impl"
+
+  elementTypeHolderClass="com.github.pyltsin.monkeyplugin.MonkeyTypes"
+  elementTypeClass="com.github.pyltsin.monkeyplugin.MonkeyElementType"
+  tokenTypeClass="com.github.pyltsin.monkeyplugin.MonkeyTokenType"
+
+   tokens = [
+        FUNCTION = "fn"
+        LET = "let"
+        TRUE = "true"
+        FALSE = "false"
+        IF = "if"
+        ELSE = "else"
+        RETURN = "return"
+
+        INT = "regexp:[0-9]+"
+        STRING = "regexp:\"[^\"]*\""
+        IDENT = "regexp:[a-zA-Z_]+"
+
+        ASSIGN = "="
+        PLUS = "+"
+        MINUS = "-"
+        BANG = "!"
+        ASTERISK = "*"
+        SLASH = "/"
+        LT = "<"
+        GT = ">"
+        EQ = "=="
+        NOT_EQ = "!="
+        COMMA = ","
+        SEMICOLON = ";"
+        COLON = ":"
+        LPAREN = "("
+        RPAREN = ")"
+        LBRACE = "{"
+        RBRACE = "}"
+        LBRACKET = "["
+        RBRACKET = "]"
+        NEW_LINE = "regexp:(\r|\n|\r\n)"
+        WHITE_SPACE = "regexp:(\s|\t)"
+   ]
+
+     extends(".*expr")=expr
+}
+
+program ::= element *
+private element ::= !<<eof>> statement SEMICOLON {pin=2 recoverWhile=property_recover}
+private property_recover ::= !( FUNCTION | LET | TRUE | FALSE |IF |ELSE |RETURN
+| INT | STRING |IDENT | ASSIGN| PLUS | MINUS| BANG | ASTERISK |SLASH | LT |GT|EQ
+| NOT_EQ | COMMA | COLON | LPAREN |RPAREN |LBRACE |RBRACE | LBRACKET | RBRACKET)
+
+statement ::= expr
+            | let_statement
+            | return_statement
+
+
+let_statement ::= LET simple_ref_expr ASSIGN (func_definition | expr | array_expr | map_expr) {pin=1}
+return_statement ::= RETURN expr {pin=1}
+
+func_definition ::= FUNCTION LPAREN param_group? RPAREN LBRACE block_state RBRACE  {pin=1}
+param_group ::= simple_ref_expr (COMMA simple_ref_expr)*  {pin(".*")=1}
+
+expr ::=
+   equal_group
+  | conditional_group
+  | sum_group
+  | product_group
+  | calc_prefix_group
+  | prefix_group
+  | call_group
+  | primary_group
+  {extraRoot=true}
+
+private equal_group ::= equal_expr | not_equal_expr
+private conditional_group ::= less_expr | more_expr
+private sum_group ::= plus_expr | minus_expr
+private product_group ::= mul_expr | div_expr
+private calc_prefix_group ::= unary_min_expr | unary_not_expr
+private prefix_group ::= if_expr
+private call_group ::= func_call_expr | identifier_call_expr
+private primary_group ::= simple_ref_expr | literal_expr | paren_expr | index_expr | array_expr | map_expr
+
+if_expr ::= IF if_cond LBRACE block_state RBRACE else_block? {pin=1}
+if_cond ::= LPAREN expr RPAREN {pin=1}
+
+block_state ::= element*
+else_block ::= ELSE LBRACE block_state RBRACE {pin = 1}
+
+equal_expr ::= expr EQ expr
+not_equal_expr ::= expr NOT_EQ expr
+
+less_expr ::= expr LT expr
+more_expr ::= expr GT expr
+
+plus_expr ::= expr PLUS expr
+minus_expr ::= expr MINUS expr
+
+mul_expr ::= expr ASTERISK expr
+div_expr ::= expr SLASH expr
+
+unary_min_expr ::= MINUS expr  {pin = 1}
+unary_not_expr ::= BANG expr  {pin = 1}
+
+func_call_expr::= func_definition call_arguments {pin = 1}
+identifier_call_expr::=simple_ref_expr call_arguments
+
+call_arguments ::= LPAREN arguments? RPAREN  {pin = 1}
+
+arguments ::= argument (COMMA argument)*  {pin(".*")=1}
+
+argument ::= expr
+
+array_expr ::= LBRACKET arguments RBRACKET  {pin = 1}
+map_expr ::= LBRACE  map_arguments? RBRACE  {pin = 1}
+map_arguments ::= (expr COLON expr)*  {pin(".*")=2}
+
+simple_ref_expr ::= IDENT
+index_expr ::= expr LBRACKET expr RBRACKET
+
+/* Literals */
+literal_expr ::= boolLiteral
+          | numericLiteral
+          | stringLiteral
+stringLiteral ::= STRING
+numericLiteral ::= integralLiteral
+boolLiteral ::= TRUE | FALSE
+integralLiteral ::= INT
+
+paren_expr ::= LPAREN expr RPAREN {pin=1}
+
+
+//noinspection BnfUnusedRule
+unusedInBnf ::=
+        BAD_CHARACTER
+        | NEW_LINE

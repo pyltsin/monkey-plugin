@@ -1,18 +1,39 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>com.github.pyltsin.monkeyplugin</id>
-    <name>monkey-plugin</name>
+    <name>Monkey-Support</name>
     <vendor>pyltsin</vendor>
 
+    <!-- Product and plugin compatibility requirements -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <!-- Text to display as description on Preferences/Settings | Plugin page -->
+    <description>
+        <![CDATA[
+      Simple plugin for Monkey language.
+      Support several files.
+    ]]>
+    </description>
+    <change-notes>
+        <![CDATA[
+      <ul>
+        <li><b>0.0.1</b>Start</li>
+      </ul>
+    ]]>
+    </change-notes>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="com.github.pyltsin.monkeyplugin.services.MyApplicationService"/>
-        <projectService serviceImplementation="com.github.pyltsin.monkeyplugin.services.MyProjectService"/>
+        <fileType name="Monkey File"
+                  implementationClass="com.github.pyltsin.monkeyplugin.MonkeyFileType"
+                  fieldName="INSTANCE"
+                  language="Monkey"
+                  extensions="monkey"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.pyltsin.monkeyplugin.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <extensions defaultExtensionNs="com.intellij">
+        <lang.parserDefinition language="Monkey"
+                               implementationClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParserDefinition"/>
+    </extensions>
+
 </idea-plugin>

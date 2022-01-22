@@ -1,1 +1,1 @@
-rootProject.name = "monkey-plugin"
+rootProject.name = "monkey-support"
