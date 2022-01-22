@@ -1,6 +1,6 @@
 <!-- Keep a Changelog guide -> https://keepachangelog.com -->
 
-# monkey-plugin Changelog
+# monkey-support Changelog
 
 ## [Unreleased]
 ### Added
