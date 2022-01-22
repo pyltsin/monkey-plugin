@@ -19,7 +19,7 @@ public interface MonkeyTypes {
   IElementType EQUAL_EXPR = new MonkeyElementType("EQUAL_EXPR");
   IElementType EXPR = new MonkeyElementType("EXPR");
   IElementType FUNC_CALL_EXPR = new MonkeyElementType("FUNC_CALL_EXPR");
-  IElementType FUNC_DEFINITION = new MonkeyElementType("FUNC_DEFINITION");
+  IElementType FUNC_EXPR = new MonkeyElementType("FUNC_EXPR");
   IElementType IDENTIFIER_CALL_EXPR = new MonkeyElementType("IDENTIFIER_CALL_EXPR");
   IElementType IF_COND = new MonkeyElementType("IF_COND");
   IElementType IF_EXPR = new MonkeyElementType("IF_EXPR");
@@ -111,8 +111,8 @@ public interface MonkeyTypes {
       else if (type == FUNC_CALL_EXPR) {
         return new MonkeyFuncCallExprImpl(node);
       }
-      else if (type == FUNC_DEFINITION) {
-        return new MonkeyFuncDefinitionImpl(node);
+      else if (type == FUNC_EXPR) {
+        return new MonkeyFuncExprImpl(node);
       }
       else if (type == IDENTIFIER_CALL_EXPR) {
         return new MonkeyIdentifierCallExprImpl(node);

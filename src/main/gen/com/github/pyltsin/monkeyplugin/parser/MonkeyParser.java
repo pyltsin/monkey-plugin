@@ -44,10 +44,11 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
     create_token_set_(ARRAY_EXPR, DIV_EXPR, EQUAL_EXPR, EXPR,
-      FUNC_CALL_EXPR, IDENTIFIER_CALL_EXPR, IF_EXPR, INDEX_EXPR,
-      LESS_EXPR, LITERAL_EXPR, MAP_EXPR, MINUS_EXPR,
-      MORE_EXPR, MUL_EXPR, NOT_EQUAL_EXPR, PAREN_EXPR,
-      PLUS_EXPR, SIMPLE_REF_EXPR, UNARY_MIN_EXPR, UNARY_NOT_EXPR),
+      FUNC_CALL_EXPR, FUNC_EXPR, IDENTIFIER_CALL_EXPR, IF_EXPR,
+      INDEX_EXPR, LESS_EXPR, LITERAL_EXPR, MAP_EXPR,
+      MINUS_EXPR, MORE_EXPR, MUL_EXPR, NOT_EQUAL_EXPR,
+      PAREN_EXPR, PLUS_EXPR, SIMPLE_REF_EXPR, UNARY_MIN_EXPR,
+      UNARY_NOT_EXPR),
   };
 
   /* ********************************************************** */
@@ -186,30 +187,6 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // FUNCTION LPAREN param_group? RPAREN LBRACE block_state RBRACE
-  public static boolean func_definition(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "func_definition")) return false;
-    if (!nextTokenIs(b, FUNCTION)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, FUNC_DEFINITION, null);
-    r = consumeTokens(b, 1, FUNCTION, LPAREN);
-    p = r; // pin = 1
-    r = r && report_error_(b, func_definition_2(b, l + 1));
-    r = p && report_error_(b, consumeTokens(b, -1, RPAREN, LBRACE)) && r;
-    r = p && report_error_(b, block_state(b, l + 1)) && r;
-    r = p && consumeToken(b, RBRACE) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
-  }
-
-  // param_group?
-  private static boolean func_definition_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "func_definition_2")) return false;
-    param_group(b, l + 1);
-    return true;
-  }
-
-  /* ********************************************************** */
   // LPAREN expr RPAREN
   public static boolean if_cond(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "if_cond")) return false;
@@ -237,7 +214,7 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LET simple_ref_expr ASSIGN (func_definition | expr | array_expr | map_expr)
+  // LET simple_ref_expr ASSIGN func_expr
   public static boolean let_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "let_statement")) return false;
     if (!nextTokenIs(b, LET)) return false;
@@ -247,20 +224,9 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     p = r; // pin = 1
     r = r && report_error_(b, simple_ref_expr(b, l + 1));
     r = p && report_error_(b, consumeToken(b, ASSIGN)) && r;
-    r = p && let_statement_3(b, l + 1) && r;
+    r = p && func_expr(b, l + 1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // func_definition | expr | array_expr | map_expr
-  private static boolean let_statement_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "let_statement_3")) return false;
-    boolean r;
-    r = func_definition(b, l + 1);
-    if (!r) r = expr(b, l + 1, -1);
-    if (!r) r = array_expr(b, l + 1);
-    if (!r) r = map_expr(b, l + 1);
-    return r;
   }
 
   /* ********************************************************** */
@@ -465,9 +431,10 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   // 3: BINARY(mul_expr) BINARY(div_expr)
   // 4: ATOM(unary_min_expr) ATOM(unary_not_expr)
   // 5: ATOM(if_expr)
-  // 6: ATOM(func_call_expr) POSTFIX(identifier_call_expr)
-  // 7: ATOM(simple_ref_expr) ATOM(literal_expr) ATOM(paren_expr) BINARY(index_expr)
-  //    ATOM(array_expr) ATOM(map_expr)
+  // 6: POSTFIX(func_call_expr) POSTFIX(identifier_call_expr)
+  // 7: BINARY(index_expr)
+  // 8: ATOM(func_expr) ATOM(array_expr) ATOM(map_expr)
+  // 9: ATOM(simple_ref_expr) ATOM(literal_expr) ATOM(paren_expr)
   public static boolean expr(PsiBuilder b, int l, int g) {
     if (!recursion_guard_(b, l, "expr")) return false;
     addVariant(b, "<expr>");
@@ -476,12 +443,12 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     r = unary_min_expr(b, l + 1);
     if (!r) r = unary_not_expr(b, l + 1);
     if (!r) r = if_expr(b, l + 1);
-    if (!r) r = func_call_expr(b, l + 1);
+    if (!r) r = func_expr(b, l + 1);
+    if (!r) r = array_expr(b, l + 1);
+    if (!r) r = map_expr(b, l + 1);
     if (!r) r = simple_ref_expr(b, l + 1);
     if (!r) r = literal_expr(b, l + 1);
     if (!r) r = paren_expr(b, l + 1);
-    if (!r) r = array_expr(b, l + 1);
-    if (!r) r = map_expr(b, l + 1);
     p = r;
     r = r && expr_0(b, l + 1, g);
     exit_section_(b, l, m, null, r, p, null);
@@ -525,9 +492,9 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
         r = expr(b, l, 3);
         exit_section_(b, l, m, DIV_EXPR, r, true, null);
       }
-      else if (g < 6 && leftMarkerIs(b, SIMPLE_REF_EXPR) && call_arguments(b, l + 1)) {
+      else if (g < 6 && leftMarkerIs(b, FUNC_EXPR) && call_arguments(b, l + 1)) {
         r = true;
-        exit_section_(b, l, m, IDENTIFIER_CALL_EXPR, r, true, null);
+        exit_section_(b, l, m, FUNC_CALL_EXPR, r, true, null);
       }
       else if (g < 7 && consumeTokenSmart(b, LBRACKET)) {
         r = report_error_(b, expr(b, l, 7));
@@ -592,17 +559,62 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // func_definition call_arguments
-  public static boolean func_call_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "func_call_expr")) return false;
+  // FUNCTION LPAREN param_group? RPAREN LBRACE block_state RBRACE
+  public static boolean func_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "func_expr")) return false;
     if (!nextTokenIsSmart(b, FUNCTION)) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, FUNC_CALL_EXPR, null);
-    r = func_definition(b, l + 1);
+    Marker m = enter_section_(b, l, _NONE_, FUNC_EXPR, null);
+    r = consumeTokensSmart(b, 1, FUNCTION, LPAREN);
     p = r; // pin = 1
-    r = r && call_arguments(b, l + 1);
+    r = r && report_error_(b, func_expr_2(b, l + 1));
+    r = p && report_error_(b, consumeTokensSmart(b, -1, RPAREN, LBRACE)) && r;
+    r = p && report_error_(b, block_state(b, l + 1)) && r;
+    r = p && consumeToken(b, RBRACE) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
+  }
+
+  // param_group?
+  private static boolean func_expr_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "func_expr_2")) return false;
+    param_group(b, l + 1);
+    return true;
+  }
+
+  // LBRACKET arguments RBRACKET
+  public static boolean array_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "array_expr")) return false;
+    if (!nextTokenIsSmart(b, LBRACKET)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, ARRAY_EXPR, null);
+    r = consumeTokenSmart(b, LBRACKET);
+    p = r; // pin = 1
+    r = r && report_error_(b, arguments(b, l + 1));
+    r = p && consumeToken(b, RBRACKET) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // LBRACE  map_arguments? RBRACE
+  public static boolean map_expr(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_expr")) return false;
+    if (!nextTokenIsSmart(b, LBRACE)) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_, MAP_EXPR, null);
+    r = consumeTokenSmart(b, LBRACE);
+    p = r; // pin = 1
+    r = r && report_error_(b, map_expr_1(b, l + 1));
+    r = p && consumeToken(b, RBRACE) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // map_arguments?
+  private static boolean map_expr_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_expr_1")) return false;
+    map_arguments(b, l + 1);
+    return true;
   }
 
   // IDENT
@@ -642,41 +654,6 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     r = p && consumeToken(b, RPAREN) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
-  }
-
-  // LBRACKET arguments RBRACKET
-  public static boolean array_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "array_expr")) return false;
-    if (!nextTokenIsSmart(b, LBRACKET)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, ARRAY_EXPR, null);
-    r = consumeTokenSmart(b, LBRACKET);
-    p = r; // pin = 1
-    r = r && report_error_(b, arguments(b, l + 1));
-    r = p && consumeToken(b, RBRACKET) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
-  }
-
-  // LBRACE  map_arguments? RBRACE
-  public static boolean map_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "map_expr")) return false;
-    if (!nextTokenIsSmart(b, LBRACE)) return false;
-    boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_, MAP_EXPR, null);
-    r = consumeTokenSmart(b, LBRACE);
-    p = r; // pin = 1
-    r = r && report_error_(b, map_expr_1(b, l + 1));
-    r = p && consumeToken(b, RBRACE) && r;
-    exit_section_(b, l, m, r, p, null);
-    return r || p;
-  }
-
-  // map_arguments?
-  private static boolean map_expr_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "map_expr_1")) return false;
-    map_arguments(b, l + 1);
-    return true;
   }
 
 }

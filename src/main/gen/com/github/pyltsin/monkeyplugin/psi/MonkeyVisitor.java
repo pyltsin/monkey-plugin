@@ -51,8 +51,8 @@ public class MonkeyVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
-  public void visitFuncDefinition(@NotNull MonkeyFuncDefinition o) {
-    visitPsiElement(o);
+  public void visitFuncExpr(@NotNull MonkeyFuncExpr o) {
+    visitExpr(o);
   }
 
   public void visitIdentifierCallExpr(@NotNull MonkeyIdentifierCallExpr o) {

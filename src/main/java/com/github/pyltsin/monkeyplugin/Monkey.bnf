@@ -63,11 +63,8 @@ statement ::= expr
             | return_statement
 
 
-let_statement ::= LET simple_ref_expr ASSIGN (func_definition | expr | array_expr | map_expr) {pin=1}
+let_statement ::= LET simple_ref_expr ASSIGN func_expr {pin=1}
 return_statement ::= RETURN expr {pin=1}
-
-func_definition ::= FUNCTION LPAREN param_group? RPAREN LBRACE block_state RBRACE  {pin=1}
-param_group ::= simple_ref_expr (COMMA simple_ref_expr)*  {pin(".*")=1}
 
 expr ::=
    equal_group
@@ -77,6 +74,8 @@ expr ::=
   | calc_prefix_group
   | prefix_group
   | call_group
+  | index_group
+  | definition_group
   | primary_group
   {extraRoot=true}
 
@@ -87,7 +86,9 @@ private product_group ::= mul_expr | div_expr
 private calc_prefix_group ::= unary_min_expr | unary_not_expr
 private prefix_group ::= if_expr
 private call_group ::= func_call_expr | identifier_call_expr
-private primary_group ::= simple_ref_expr | literal_expr | paren_expr | index_expr | array_expr | map_expr
+private index_group ::= index_expr
+private definition_group ::= func_expr | array_expr | map_expr
+private primary_group ::=  simple_ref_expr | literal_expr | paren_expr
 
 if_expr ::= IF if_cond LBRACE block_state RBRACE else_block? {pin=1}
 if_cond ::= LPAREN expr RPAREN {pin=1}
@@ -110,7 +111,10 @@ div_expr ::= expr SLASH expr
 unary_min_expr ::= MINUS expr  {pin = 1}
 unary_not_expr ::= BANG expr  {pin = 1}
 
-func_call_expr::= func_definition call_arguments {pin = 1}
+func_expr ::= FUNCTION LPAREN param_group? RPAREN LBRACE block_state RBRACE  {pin=1}
+param_group ::= simple_ref_expr (COMMA simple_ref_expr)*  {pin(".*")=1}
+
+func_call_expr::= func_expr call_arguments {pin = 1}
 identifier_call_expr::=simple_ref_expr call_arguments
 
 call_arguments ::= LPAREN arguments? RPAREN  {pin = 1}

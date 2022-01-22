@@ -33,10 +33,4 @@ public class MonkeyLetStatementImpl extends ASTWrapperPsiElement implements Monk
     return PsiTreeUtil.getChildrenOfTypeAsList(this, MonkeyExpr.class);
   }
 
-  @Override
-  @Nullable
-  public MonkeyFuncDefinition getFuncDefinition() {
-    return findChildByClass(MonkeyFuncDefinition.class);
-  }
-
 }
