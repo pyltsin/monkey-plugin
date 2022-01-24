@@ -12,6 +12,7 @@ import com.intellij.psi.tree.IElementType
 class MonkeySyntaxHighlighter : SyntaxHighlighterBase() {
     private val ATTRIBUTES: Map<IElementType, TextAttributesKey> = HashMap()
 
+    //todo add annotator - see Go
     companion object{
         val KEYWORDS = TextAttributesKey.createTextAttributesKey("MONKEY_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
         val NUMBER = TextAttributesKey.createTextAttributesKey("MOKNEY_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
