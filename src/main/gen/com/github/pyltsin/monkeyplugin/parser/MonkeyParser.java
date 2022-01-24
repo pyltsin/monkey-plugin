@@ -43,12 +43,11 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   }
 
   public static final TokenSet[] EXTENDS_SETS_ = new TokenSet[] {
-    create_token_set_(ARRAY_EXPR, DIV_EXPR, EQUAL_EXPR, EXPR,
-      FUNC_CALL_EXPR, FUNC_EXPR, IDENTIFIER_CALL_EXPR, IF_EXPR,
-      INDEX_EXPR, LESS_EXPR, LITERAL_EXPR, MAP_EXPR,
-      MINUS_EXPR, MORE_EXPR, MUL_EXPR, NOT_EQUAL_EXPR,
-      PAREN_EXPR, PLUS_EXPR, SIMPLE_REF_EXPR, UNARY_MIN_EXPR,
-      UNARY_NOT_EXPR),
+    create_token_set_(ARRAY_EXPR, CALL_EXPR, DIV_EXPR, EQUAL_EXPR,
+      EXPR, FUNC_EXPR, IF_EXPR, INDEX_EXPR,
+      LESS_EXPR, LITERAL_EXPR, MAP_EXPR, MINUS_EXPR,
+      MORE_EXPR, MUL_EXPR, NOT_EQUAL_EXPR, PAREN_EXPR,
+      PLUS_EXPR, SIMPLE_REF_EXPR, UNARY_MIN_EXPR, UNARY_NOT_EXPR),
   };
 
   /* ********************************************************** */
@@ -214,7 +213,7 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LET simple_ref_expr ASSIGN func_expr
+  // LET simple_ref_expr ASSIGN expr
   public static boolean let_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "let_statement")) return false;
     if (!nextTokenIs(b, LET)) return false;
@@ -224,7 +223,7 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     p = r; // pin = 1
     r = r && report_error_(b, simple_ref_expr(b, l + 1));
     r = p && report_error_(b, consumeToken(b, ASSIGN)) && r;
-    r = p && func_expr(b, l + 1) && r;
+    r = p && expr(b, l + 1, -1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -431,7 +430,7 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   // 3: BINARY(mul_expr) BINARY(div_expr)
   // 4: ATOM(unary_min_expr) ATOM(unary_not_expr)
   // 5: ATOM(if_expr)
-  // 6: POSTFIX(func_call_expr) POSTFIX(identifier_call_expr)
+  // 6: POSTFIX(call_expr)
   // 7: BINARY(index_expr)
   // 8: ATOM(func_expr) ATOM(array_expr) ATOM(map_expr)
   // 9: ATOM(simple_ref_expr) ATOM(literal_expr) ATOM(paren_expr)
@@ -492,9 +491,9 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
         r = expr(b, l, 3);
         exit_section_(b, l, m, DIV_EXPR, r, true, null);
       }
-      else if (g < 6 && leftMarkerIs(b, FUNC_EXPR) && call_arguments(b, l + 1)) {
+      else if (g < 6 && call_arguments(b, l + 1)) {
         r = true;
-        exit_section_(b, l, m, FUNC_CALL_EXPR, r, true, null);
+        exit_section_(b, l, m, CALL_EXPR, r, true, null);
       }
       else if (g < 7 && consumeTokenSmart(b, LBRACKET)) {
         r = report_error_(b, expr(b, l, 7));

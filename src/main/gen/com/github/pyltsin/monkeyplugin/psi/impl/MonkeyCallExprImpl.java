@@ -10,15 +10,15 @@ import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.pyltsin.monkeyplugin.MonkeyTypes.*;
 import com.github.pyltsin.monkeyplugin.psi.*;
 
-public class MonkeyIfParenExprImpl extends MonkeyExprImpl implements MonkeyIfParenExpr {
+public class MonkeyCallExprImpl extends MonkeyExprImpl implements MonkeyCallExpr {
 
-  public MonkeyIfParenExprImpl(@NotNull ASTNode node) {
+  public MonkeyCallExprImpl(@NotNull ASTNode node) {
     super(node);
   }
 
   @Override
   public void accept(@NotNull MonkeyVisitor visitor) {
-    visitor.visitIfParenExpr(this);
+    visitor.visitCallExpr(this);
   }
 
   @Override
@@ -28,9 +28,15 @@ public class MonkeyIfParenExprImpl extends MonkeyExprImpl implements MonkeyIfPar
   }
 
   @Override
-  @Nullable
+  @NotNull
+  public MonkeyCallArguments getCallArguments() {
+    return findNotNullChildByClass(MonkeyCallArguments.class);
+  }
+
+  @Override
+  @NotNull
   public MonkeyExpr getExpr() {
-    return findChildByClass(MonkeyExpr.class);
+    return findNotNullChildByClass(MonkeyExpr.class);
   }
 
 }

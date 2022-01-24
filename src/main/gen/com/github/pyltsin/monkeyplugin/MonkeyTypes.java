@@ -14,13 +14,12 @@ public interface MonkeyTypes {
   IElementType BLOCK_STATE = new MonkeyElementType("BLOCK_STATE");
   IElementType BOOL_LITERAL = new MonkeyElementType("BOOL_LITERAL");
   IElementType CALL_ARGUMENTS = new MonkeyElementType("CALL_ARGUMENTS");
+  IElementType CALL_EXPR = new MonkeyElementType("CALL_EXPR");
   IElementType DIV_EXPR = new MonkeyElementType("DIV_EXPR");
   IElementType ELSE_BLOCK = new MonkeyElementType("ELSE_BLOCK");
   IElementType EQUAL_EXPR = new MonkeyElementType("EQUAL_EXPR");
   IElementType EXPR = new MonkeyElementType("EXPR");
-  IElementType FUNC_CALL_EXPR = new MonkeyElementType("FUNC_CALL_EXPR");
   IElementType FUNC_EXPR = new MonkeyElementType("FUNC_EXPR");
-  IElementType IDENTIFIER_CALL_EXPR = new MonkeyElementType("IDENTIFIER_CALL_EXPR");
   IElementType IF_COND = new MonkeyElementType("IF_COND");
   IElementType IF_EXPR = new MonkeyElementType("IF_EXPR");
   IElementType INDEX_EXPR = new MonkeyElementType("INDEX_EXPR");
@@ -99,6 +98,9 @@ public interface MonkeyTypes {
       else if (type == CALL_ARGUMENTS) {
         return new MonkeyCallArgumentsImpl(node);
       }
+      else if (type == CALL_EXPR) {
+        return new MonkeyCallExprImpl(node);
+      }
       else if (type == DIV_EXPR) {
         return new MonkeyDivExprImpl(node);
       }
@@ -108,14 +110,8 @@ public interface MonkeyTypes {
       else if (type == EQUAL_EXPR) {
         return new MonkeyEqualExprImpl(node);
       }
-      else if (type == FUNC_CALL_EXPR) {
-        return new MonkeyFuncCallExprImpl(node);
-      }
       else if (type == FUNC_EXPR) {
         return new MonkeyFuncExprImpl(node);
-      }
-      else if (type == IDENTIFIER_CALL_EXPR) {
-        return new MonkeyIdentifierCallExprImpl(node);
       }
       else if (type == IF_COND) {
         return new MonkeyIfCondImpl(node);
