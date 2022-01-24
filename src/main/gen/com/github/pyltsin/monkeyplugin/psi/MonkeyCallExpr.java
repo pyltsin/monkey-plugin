@@ -5,12 +5,12 @@ import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 
-public interface MonkeyFuncCallExpr extends MonkeyExpr {
+public interface MonkeyCallExpr extends MonkeyExpr {
 
-  @Nullable
+  @NotNull
   MonkeyCallArguments getCallArguments();
 
   @NotNull
-  MonkeyFuncExpr getFuncExpr();
+  MonkeyExpr getExpr();
 
 }

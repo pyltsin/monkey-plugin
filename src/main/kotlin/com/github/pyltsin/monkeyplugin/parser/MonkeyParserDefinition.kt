@@ -19,11 +19,54 @@ import com.intellij.psi.tree.TokenSet
 class MonkeyParserDefinition() : ParserDefinition {
 
     companion object {
+
         @JvmStatic
         val FILE = IFileElementType(MonkeyLanguage.INSTANCE)
 
         @JvmStatic
+        val SEMICOLON = TokenSet.create(MonkeyTypes.SEMICOLON)
+
+        @JvmStatic
+        val COLON = TokenSet.create(MonkeyTypes.COLON)
+
+        @JvmStatic
+        val BRACKETS = TokenSet.create(MonkeyTypes.RBRACKET, MonkeyTypes.LBRACKET)
+
+        @JvmStatic
+        val BRACES = TokenSet.create(MonkeyTypes.RBRACE, MonkeyTypes.LBRACE)
+
+        @JvmStatic
+        val PARENTHESES = TokenSet.create(MonkeyTypes.LPAREN, MonkeyTypes.RPAREN)
+
+        @JvmStatic
+        val COMMA = TokenSet.create(MonkeyTypes.COMMA)
+
+        @JvmStatic
+        val BAD_CHARACTER = TokenSet.create(MonkeyTypes.BAD_CHARACTER)
+
+        @JvmStatic
+        val IDENTIFIER = TokenSet.create(MonkeyTypes.IDENT)
+
+        @JvmStatic
         val STRINGS = TokenSet.create(MonkeyTypes.STRING)
+
+        @JvmStatic
+        val OPERATORS = TokenSet.create(
+            MonkeyTypes.MINUS,
+            MonkeyTypes.PLUS,
+            MonkeyTypes.SLASH,
+            MonkeyTypes.ASTERISK,
+            MonkeyTypes.LT,
+            MonkeyTypes.GT,
+            MonkeyTypes.EQ,
+            MonkeyTypes.NOT_EQ
+        )
+
+        @JvmStatic
+        val NUMBERS = TokenSet.create(MonkeyTypes.INT)
+
+        @JvmStatic
+        val KEYWORDS = TokenSet.create(MonkeyTypes.LET, MonkeyTypes.FUNCTION, MonkeyTypes.RETURN)
 
         @JvmStatic
         val WHITE_SPACES = TokenSet.create(MonkeyTypes.NEW_LINE, WHITE_SPACE)

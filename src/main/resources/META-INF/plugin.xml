@@ -32,8 +32,17 @@
     </extensions>
 
     <extensions defaultExtensionNs="com.intellij">
+        <colorSettingsPage implementation="com.github.pyltsin.monkeyplugin.highlighter.MonkeyColorSettingsPage"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
         <lang.parserDefinition language="Monkey"
                                implementationClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParserDefinition"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <lang.syntaxHighlighterFactory language="Monkey"
+                                       implementationClass="com.github.pyltsin.monkeyplugin.highlighter.MonkeySyntaxHighlighterFactory"/>
     </extensions>
 
 </idea-plugin>
