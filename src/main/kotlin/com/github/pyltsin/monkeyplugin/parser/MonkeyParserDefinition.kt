@@ -66,7 +66,8 @@ class MonkeyParserDefinition() : ParserDefinition {
         val NUMBERS = TokenSet.create(MonkeyTypes.INT)
 
         @JvmStatic
-        val KEYWORDS = TokenSet.create(MonkeyTypes.LET, MonkeyTypes.FUNCTION, MonkeyTypes.RETURN)
+        val KEYWORDS =
+            TokenSet.create(MonkeyTypes.LET, MonkeyTypes.FUNCTION, MonkeyTypes.RETURN, MonkeyTypes.IF, MonkeyTypes.ELSE)
 
         @JvmStatic
         val WHITE_SPACES = TokenSet.create(MonkeyTypes.NEW_LINE, WHITE_SPACE)

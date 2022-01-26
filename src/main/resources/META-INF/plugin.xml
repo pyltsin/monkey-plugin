@@ -45,4 +45,9 @@
                                        implementationClass="com.github.pyltsin.monkeyplugin.highlighter.MonkeySyntaxHighlighterFactory"/>
     </extensions>
 
+    <extensions defaultExtensionNs="com.intellij">
+        <lang.formatter language="Monkey"
+                        implementationClass="com.github.pyltsin.monkeyplugin.formatter.MonkeyFormattingModelBuilder"/>
+    </extensions>
+
 </idea-plugin>
