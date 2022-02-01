@@ -29,25 +29,25 @@
                   fieldName="INSTANCE"
                   language="Monkey"
                   extensions="monkey"/>
-    </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
         <colorSettingsPage implementation="com.github.pyltsin.monkeyplugin.highlighter.MonkeyColorSettingsPage"/>
-    </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
         <lang.parserDefinition language="Monkey"
                                implementationClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParserDefinition"/>
-    </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
         <lang.syntaxHighlighterFactory language="Monkey"
                                        implementationClass="com.github.pyltsin.monkeyplugin.highlighter.MonkeySyntaxHighlighterFactory"/>
-    </extensions>
 
-    <extensions defaultExtensionNs="com.intellij">
         <lang.formatter language="Monkey"
                         implementationClass="com.github.pyltsin.monkeyplugin.formatter.MonkeyFormattingModelBuilder"/>
+        <!-- run -->
+        <programRunner implementation="com.github.pyltsin.monkeyplugin.runconfig.MonkeyRunner"/>
+        <configurationType implementation="com.github.pyltsin.monkeyplugin.runconfig.MonkeyRunConfigurationType"/>
+        <runConfigurationProducer
+                implementation="com.github.pyltsin.monkeyplugin.runconfig.MonkeyApplicationRunConfigurationProducer"/>
+        <runLineMarkerContributor language="Monkey"
+                                  implementationClass="com.github.pyltsin.monkeyplugin.runconfig.MonkeyRunLineMarkerContributor"/>
     </extensions>
+
 
 </idea-plugin>
