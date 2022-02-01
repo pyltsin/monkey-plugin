@@ -1,3 +1,17 @@
+//
+// 1 - аннотатор для локальный переменных
+// 2 - аннотатор ошибок
+//   - не объявлена переменная
+//   - неправильные типы
+// 3 - start project
+// 4 - linemarker для старта (см. 3)
+// 5 - completion - названия переменных
+// 6 - reference contributor
+// 7 - найти определение
+// 8 - найти использование
+// 9 - structure view
+// 10 - stubs
+// 11 - тесты
 {
   parserClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParser"
   parserUtilClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParserUtil"
@@ -8,6 +22,8 @@
   psiImplClassSuffix="Impl"
   psiPackage="com.github.pyltsin.monkeyplugin.psi"
   psiImplPackage="com.github.pyltsin.monkeyplugin.psi.impl"
+
+  psiImplUtilClass="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyPsiImplUtil"
 
   elementTypeHolderClass="com.github.pyltsin.monkeyplugin.MonkeyTypes"
   elementTypeClass="com.github.pyltsin.monkeyplugin.MonkeyElementType"
@@ -50,13 +66,24 @@
    ]
 
      extends(".*expr")=expr
+
+     extends("equal_group|conditional_group|sum_group|product_group")=BinaryExpr
+
+     generateTokenAccessors=true
+
 }
 
-program ::= element *
+
+program ::= all
+all ::= element *
 private element ::= !<<eof>> statement SEMICOLON {pin=2 recoverWhile=property_recover}
 private property_recover ::= !( FUNCTION | LET | TRUE | FALSE |IF |ELSE |RETURN
 | INT | STRING |IDENT | ASSIGN| PLUS | MINUS| BANG | ASTERISK |SLASH | LT |GT|EQ
 | NOT_EQ | COMMA | COLON | LPAREN |RPAREN |LBRACE |RBRACE | LBRACKET | RBRACKET)
+
+fake BinaryExpr ::= expr+ {
+  methods=[left="Expression[0]" right="Expression[1]"]
+}
 
 statement ::= expr
             | let_statement
@@ -77,7 +104,7 @@ expr ::=
   | index_group
   | definition_group
   | primary_group
-  {extraRoot=true}
+  {extraRoot=true methods=[resolveType] }
 
 private equal_group ::= equal_expr | not_equal_expr
 private conditional_group ::= less_expr | more_expr
@@ -126,7 +153,7 @@ array_expr ::= LBRACKET arguments RBRACKET  {pin = 1}
 map_expr ::= LBRACE  map_arguments? RBRACE  {pin = 1}
 map_arguments ::= (expr COLON expr)*  {pin(".*")=2}
 
-simple_ref_expr ::= IDENT
+simple_ref_expr ::= IDENT { methods=[getReference resolve] }
 index_expr ::= expr LBRACKET expr RBRACKET
 
 /* Literals */

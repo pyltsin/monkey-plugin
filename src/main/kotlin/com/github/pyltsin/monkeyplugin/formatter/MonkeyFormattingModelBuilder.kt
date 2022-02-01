@@ -74,9 +74,8 @@ class MonkeyFormattingModelBuilder : FormattingModelBuilder {
         }
 
         private fun calcIndent(child: ASTNode): Indent {
-            val parentType = myNode.elementType
             val type = child.elementType
-            if (type==MonkeyTypes.BLOCK_STATE) {
+            if (type == MonkeyTypes.BLOCK_STATE) {
                 return Indent.getNormalIndent(true)
             }
             return Indent.getNoneIndent()
