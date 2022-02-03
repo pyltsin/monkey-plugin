@@ -40,6 +40,9 @@
 
         <lang.formatter language="Monkey"
                         implementationClass="com.github.pyltsin.monkeyplugin.formatter.MonkeyFormattingModelBuilder"/>
+
+        <annotator language="Monkey" implementationClass="com.github.pyltsin.monkeyplugin.annotator.MonkeyGlobalDefinitionAnnotator"/>
+
         <!-- run -->
         <programRunner implementation="com.github.pyltsin.monkeyplugin.runconfig.MonkeyRunner"/>
         <configurationType implementation="com.github.pyltsin.monkeyplugin.runconfig.MonkeyRunConfigurationType"/>
