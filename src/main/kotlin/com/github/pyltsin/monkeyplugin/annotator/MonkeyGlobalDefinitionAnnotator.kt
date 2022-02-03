@@ -18,7 +18,7 @@ class MonkeyGlobalDefinitionAnnotator: Annotator {
         if (parent !is MonkeyLetStatement) {
             return
         }
-        val grandParent = parent.parent
+        val grandParent = parent.parent?.parent
         if (grandParent !is MonkeyAll) {
             return
         }

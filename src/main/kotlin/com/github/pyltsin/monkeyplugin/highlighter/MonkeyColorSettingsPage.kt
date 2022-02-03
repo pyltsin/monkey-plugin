@@ -15,7 +15,8 @@ class MonkeyColorSettingsPage : ColorSettingsPage {
         AttributesDescriptor("String", MonkeySyntaxHighlighter.STRING),
         AttributesDescriptor("Brackets", MonkeySyntaxHighlighter.BRACKETS),
         AttributesDescriptor("Operator", MonkeySyntaxHighlighter.OPERATORS),
-        AttributesDescriptor("Bad value", MonkeySyntaxHighlighter.BAD_CHARACTER)
+        AttributesDescriptor("Bad value", MonkeySyntaxHighlighter.BAD_CHARACTER),
+        AttributesDescriptor("Global identifier", MonkeySyntaxHighlighter.GLOBAL_IDENTIFIER)
     )
 
     override fun getAttributeDescriptors(): Array<AttributesDescriptor> {
