@@ -14,6 +14,7 @@ class MonkeySyntaxHighlighter : SyntaxHighlighterBase() {
 
     //todo add annotator - see Go
     companion object{
+        val GLOBAL_IDENTIFIER = TextAttributesKey.createTextAttributesKey("GLOBAL_IDENTIFIER", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE)
         val KEYWORDS = TextAttributesKey.createTextAttributesKey("MONKEY_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
         val NUMBER = TextAttributesKey.createTextAttributesKey("MOKNEY_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
         val STRING = TextAttributesKey.createTextAttributesKey("MOKNEY_STRING", DefaultLanguageHighlighterColors.STRING)
