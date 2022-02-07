@@ -10,7 +10,8 @@
 // 7 - найти определение
 // 8 - найти использование
 // 9 - structure view
-// 10 - stubs
+// 10.1 - rename
+// + 10 - stubs
 // 11 - тесты
 {
   parserClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParser"
@@ -25,9 +26,14 @@
 
   psiImplUtilClass="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyPsiImplUtil"
 
+  implements="com.github.pyltsin.monkeyplugin.psi.MonkeyCompositeElement"
+  extends="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyCompositeElementImpl"
+
   elementTypeHolderClass="com.github.pyltsin.monkeyplugin.MonkeyTypes"
   elementTypeClass="com.github.pyltsin.monkeyplugin.MonkeyElementType"
   tokenTypeClass="com.github.pyltsin.monkeyplugin.MonkeyTokenType"
+
+  elementTypeFactory("let_expr")="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyElementTypeFactory.factory"
 
    tokens = [
         FUNCTION = "fn"
@@ -90,7 +96,15 @@ statement ::= expr
             | return_statement
 
 
-let_statement ::= LET simple_ref_expr ASSIGN expr {pin=1}
+let_statement ::= LET let_expr ASSIGN expr {pin=1}
+
+let_expr ::=  IDENT {
+    implements="com.github.pyltsin.monkeyplugin.psi.MonkeyNamedElement"
+    extends="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyLetExpressionBaseImpl"
+    stubClass="com.github.pyltsin.monkeyplugin.stubs.MonkeyLetExpressionStub"
+    methods=[resolve]
+}
+
 return_statement ::= RETURN expr {pin=1}
 
 expr ::=
