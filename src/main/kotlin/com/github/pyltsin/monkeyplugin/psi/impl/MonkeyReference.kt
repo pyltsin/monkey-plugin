@@ -11,8 +11,8 @@ abstract class MonkeyReferenceBase(@JvmField protected val psiElement: PsiElemen
 
     override fun multiResolve(incompleteCode: Boolean): Array<ResolveResult> {
         return ResolveCache.getInstance(psiElement.project).resolveWithCaching(
-            this, { fregeReferenceBase, _ ->
-                fregeReferenceBase.resolveInner(false)
+            this, { referenceBase, _ ->
+                referenceBase.resolveInner(false)
                     .map { PsiElementResolveResult(it) }
                     .toTypedArray()
             },

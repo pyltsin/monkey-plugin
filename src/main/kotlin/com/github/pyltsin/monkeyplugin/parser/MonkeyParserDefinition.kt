@@ -4,6 +4,7 @@ import com.github.pyltsin.monkeyplugin.MonkeyLanguage
 import com.github.pyltsin.monkeyplugin.MonkeyTypes
 import com.github.pyltsin.monkeyplugin.lexer.MonkeyFlexAdapter
 import com.github.pyltsin.monkeyplugin.psi.MonkeyFile
+import com.github.pyltsin.monkeyplugin.stubs.types.MonkeyFileElementType
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
 import com.intellij.lang.PsiParser
@@ -82,8 +83,7 @@ class MonkeyParserDefinition() : ParserDefinition {
     }
 
     override fun getFileNodeType(): IFileElementType {
-        //todo исправить для stub
-        return FILE
+        return MonkeyFileElementType.INSTANCE
     }
 
     override fun getCommentTokens(): TokenSet {
