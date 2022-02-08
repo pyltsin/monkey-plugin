@@ -82,10 +82,6 @@ public class MonkeyVisitor extends PsiElementVisitor {
     visitExpr(o);
   }
 
-  public void visitLetExpr(@NotNull MonkeyLetExpr o) {
-    visitNamedElement(o);
-  }
-
   public void visitLetStatement(@NotNull MonkeyLetStatement o) {
     visitCompositeElement(o);
   }
@@ -140,6 +136,7 @@ public class MonkeyVisitor extends PsiElementVisitor {
 
   public void visitSimpleRefExpr(@NotNull MonkeySimpleRefExpr o) {
     visitExpr(o);
+    // visitNamedElement(o);
   }
 
   public void visitStatement(@NotNull MonkeyStatement o) {
@@ -160,6 +157,10 @@ public class MonkeyVisitor extends PsiElementVisitor {
 
   public void visitUnusedInBnf(@NotNull MonkeyUnusedInBnf o) {
     visitCompositeElement(o);
+  }
+
+  public void visitVarDefinition(@NotNull MonkeyVarDefinition o) {
+    visitNamedElement(o);
   }
 
   public void visitNamedElement(@NotNull MonkeyNamedElement o) {

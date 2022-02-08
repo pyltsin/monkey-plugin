@@ -4,7 +4,7 @@ import com.github.pyltsin.monkeyplugin.psi.MonkeyNamedElement
 import com.intellij.psi.stubs.StringStubIndexExtension
 import com.intellij.psi.stubs.StubIndexKey
 
-class MonkeyLetNameIndex : StringStubIndexExtension<MonkeyNamedElement>() {
+class MonkeyVarNameIndex : StringStubIndexExtension<MonkeyNamedElement>() {
     override fun getVersion(): Int {
         return super.getVersion() + VERSION
     }
@@ -15,7 +15,7 @@ class MonkeyLetNameIndex : StringStubIndexExtension<MonkeyNamedElement>() {
 
     companion object {
         val KEY: StubIndexKey<String, MonkeyNamedElement> =
-            StubIndexKey.createIndexKey("monkey.let.name")
+            StubIndexKey.createIndexKey("monkey.var.name")
         const val VERSION = 0
     }
 }

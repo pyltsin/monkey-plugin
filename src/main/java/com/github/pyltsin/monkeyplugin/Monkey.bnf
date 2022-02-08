@@ -33,7 +33,7 @@
   elementTypeClass="com.github.pyltsin.monkeyplugin.MonkeyElementType"
   tokenTypeClass="com.github.pyltsin.monkeyplugin.MonkeyTokenType"
 
-  elementTypeFactory("let_expr")="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyElementTypeFactory.factory"
+  elementTypeFactory("var_definition")="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyElementTypeFactory.factory"
 
    tokens = [
         FUNCTION = "fn"
@@ -96,14 +96,7 @@ statement ::= expr
             | return_statement
 
 
-let_statement ::= LET let_expr ASSIGN expr {pin=1}
-
-let_expr ::=  IDENT {
-    implements="com.github.pyltsin.monkeyplugin.psi.MonkeyNamedElement"
-    extends="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyLetExpressionBaseImpl"
-    stubClass="com.github.pyltsin.monkeyplugin.stubs.MonkeyLetExpressionStub"
-    methods=[resolve]
-}
+let_statement ::= LET var_definition ASSIGN expr {pin=1}
 
 return_statement ::= RETURN expr {pin=1}
 
@@ -153,7 +146,14 @@ unary_min_expr ::= MINUS expr  {pin = 1}
 unary_not_expr ::= BANG expr  {pin = 1}
 
 func_expr ::= FUNCTION LPAREN param_group? RPAREN LBRACE block_state RBRACE  {pin=1}
-param_group ::= simple_ref_expr (COMMA simple_ref_expr)*  {pin(".*")=1}
+param_group ::= var_definition (COMMA var_definition)*  {pin(".*")=1}
+
+var_definition ::=  IDENT {
+    implements="com.github.pyltsin.monkeyplugin.psi.MonkeyNamedElement"
+    extends="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyVarDefinitionBaseImpl"
+    stubClass="com.github.pyltsin.monkeyplugin.stubs.MonkeyVarDefinitionStub"
+    methods=[resolve]
+}
 
 call_expr::=expr call_arguments
 
@@ -167,7 +167,10 @@ array_expr ::= LBRACKET arguments RBRACKET  {pin = 1}
 map_expr ::= LBRACE  map_arguments? RBRACE  {pin = 1}
 map_arguments ::= (expr COLON expr)*  {pin(".*")=2}
 
-simple_ref_expr ::= IDENT { methods=[getReference resolve] }
+simple_ref_expr ::= IDENT {
+    implements="com.github.pyltsin.monkeyplugin.psi.MonkeyNamedElement"
+    methods=[getReference resolve getName getNameIdentifier setName] }
+
 index_expr ::= expr LBRACKET expr RBRACKET
 
 /* Literals */

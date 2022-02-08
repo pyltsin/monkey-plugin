@@ -35,8 +35,8 @@ public class MonkeyLetStatementImpl extends ASTWrapperPsiElement implements Monk
 
   @Override
   @Nullable
-  public MonkeyLetExpr getLetExpr() {
-    return PsiTreeUtil.getChildOfType(this, MonkeyLetExpr.class);
+  public MonkeyVarDefinition getVarDefinition() {
+    return PsiTreeUtil.getChildOfType(this, MonkeyVarDefinition.class);
   }
 
   @Override

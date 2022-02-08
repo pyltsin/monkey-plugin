@@ -45,7 +45,7 @@
                    implementationClass="com.github.pyltsin.monkeyplugin.annotator.MonkeyGlobalDefinitionAnnotator"/>
 
         <!-- index -->
-        <stubIndex implementation="com.github.pyltsin.monkeyplugin.stubs.MonkeyLetNameIndex"/>
+        <stubIndex implementation="com.github.pyltsin.monkeyplugin.stubs.MonkeyVarNameIndex"/>
 
         <!-- run -->
         <programRunner implementation="com.github.pyltsin.monkeyplugin.runconfig.MonkeyRunner"/>
