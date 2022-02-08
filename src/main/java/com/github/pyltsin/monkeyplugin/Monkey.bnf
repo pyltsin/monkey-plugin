@@ -1,7 +1,7 @@
 //
 // + 1 - аннотатор для локальный переменных
 // 2 - аннотатор ошибок
-//   - не объявлена переменная
+// +  - не объявлена переменная
 //   - неправильные типы
 // + 3 - start project
 // + 4 - linemarker для старта (см. 3)
@@ -13,6 +13,7 @@
 // 10.1 - rename
 // + 10 - stubs
 // 11 - тесты
+// + 12 - скобки
 {
   parserClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParser"
   parserUtilClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParserUtil"
@@ -152,7 +153,6 @@ var_definition ::=  IDENT {
     implements="com.github.pyltsin.monkeyplugin.psi.MonkeyNamedElement"
     extends="com.github.pyltsin.monkeyplugin.psi.impl.MonkeyVarDefinitionBaseImpl"
     stubClass="com.github.pyltsin.monkeyplugin.stubs.MonkeyVarDefinitionStub"
-    methods=[resolve]
 }
 
 call_expr::=expr call_arguments
@@ -167,9 +167,7 @@ array_expr ::= LBRACKET arguments RBRACKET  {pin = 1}
 map_expr ::= LBRACE  map_arguments? RBRACE  {pin = 1}
 map_arguments ::= (expr COLON expr)*  {pin(".*")=2}
 
-simple_ref_expr ::= IDENT {
-    implements="com.github.pyltsin.monkeyplugin.psi.MonkeyNamedElement"
-    methods=[getReference resolve getName getNameIdentifier setName] }
+simple_ref_expr ::= IDENT {methods=[getReference resolve setName] }
 
 index_expr ::= expr LBRACKET expr RBRACKET
 

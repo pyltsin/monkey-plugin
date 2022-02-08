@@ -13,8 +13,20 @@ class MonkeyRunLineMarkerContributor : RunLineMarkerContributor() {
         if (element.language != MonkeyLanguage.INSTANCE) {
             return null
         }
-        if (element !is MonkeyAll) {
+
+        if (element.children.isNotEmpty()) {
             return null
+        }
+
+        var currentElement: PsiElement? = element
+        while (true) {
+            if (currentElement == null || currentElement is MonkeyAll) {
+                break
+            }
+            if (currentElement.prevSibling != null) {
+                return null
+            }
+            currentElement = currentElement.parent
         }
 
         val actions: Array<AnAction> = ExecutorAction.getActions()

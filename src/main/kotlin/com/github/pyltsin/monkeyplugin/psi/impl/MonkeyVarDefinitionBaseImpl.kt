@@ -1,7 +1,6 @@
 package com.github.pyltsin.monkeyplugin.psi.impl
 
-import com.github.pyltsin.monkeyplugin.psi.MonkeyLetExpr
-import com.github.pyltsin.monkeyplugin.psi.impl.MonkeyPsiImplUtil.Companion.getReference
+import com.github.pyltsin.monkeyplugin.psi.MonkeyVarDefinition
 import com.github.pyltsin.monkeyplugin.stubs.MonkeyVarDefinitionStub
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.text.StringUtil
@@ -11,7 +10,7 @@ import com.intellij.psi.util.PsiTreeUtil
 
 abstract class MonkeyVarDefinitionBaseImpl :
     MonkeyNamedStubbedPsiElementBase<MonkeyVarDefinitionStub>,
-    MonkeyLetExpr {
+    MonkeyVarDefinition {
     constructor(stub: MonkeyVarDefinitionStub, nodeType: IStubElementType<*, *>) : super(stub, nodeType)
     constructor(node: ASTNode) : super(node)
 
@@ -24,14 +23,10 @@ abstract class MonkeyVarDefinitionBaseImpl :
         return this.node.psi
     }
 
-    override fun getReference(): MonkeyReferenceBase {
-        return getReference(this)
-    }
-
     override fun setName(name: String): PsiElement {
         val e: PsiElement =
             MonkeyElementTextFactory.createStatementFromText(project, "let $name = 1")
-        val newLetExpr = PsiTreeUtil.findChildOfType(e, MonkeyLetExpr::class.java)
+        val newLetExpr = PsiTreeUtil.findChildOfType(e, MonkeyVarDefinition::class.java)
         if (newLetExpr != null) {
             this.replace(newLetExpr)
         }

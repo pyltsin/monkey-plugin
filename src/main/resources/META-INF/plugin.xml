@@ -30,19 +30,38 @@
                   language="Monkey"
                   extensions="monkey"/>
 
-        <colorSettingsPage implementation="com.github.pyltsin.monkeyplugin.highlighter.MonkeyColorSettingsPage"/>
-
         <lang.parserDefinition language="Monkey"
                                implementationClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParserDefinition"/>
 
         <lang.syntaxHighlighterFactory language="Monkey"
                                        implementationClass="com.github.pyltsin.monkeyplugin.highlighter.MonkeySyntaxHighlighterFactory"/>
 
+        <colorSettingsPage implementation="com.github.pyltsin.monkeyplugin.highlighter.MonkeyColorSettingsPage"/>
+
+        <lang.braceMatcher language="Monkey"
+                           implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyBraceMatcher"/>
+
+
         <lang.formatter language="Monkey"
                         implementationClass="com.github.pyltsin.monkeyplugin.formatter.MonkeyFormattingModelBuilder"/>
 
         <annotator language="Monkey"
                    implementationClass="com.github.pyltsin.monkeyplugin.annotator.MonkeyGlobalDefinitionAnnotator"/>
+        <annotator language="Monkey"
+                   implementationClass="com.github.pyltsin.monkeyplugin.annotator.MonkeyWarningAnnotator"/>
+
+        <!--    todo    -->
+        <!--        <lang.findUsagesProvider language="Frege"-->
+        <!--                                 implementationClass="com.plugin.frege.findusages.FregeFindUsagesProvider"/>-->
+        <!--        <lang.refactoringSupport language="Frege"-->
+        <!--                                 implementationClass="com.plugin.frege.refactor.FregeRefactoringSupportProvider"/>-->
+        <!--        <renameInputValidator implementation="com.plugin.frege.refactor.FregeRenameInputValidator"/>-->
+        <!--        <completion.contributor language="Frege"-->
+        <!--                                implementationClass="com.plugin.frege.completion.FregeKeywordCompletionContributor"/>-->
+        <!--        <codeInsight.lineMarkerProvider language="Frege"-->
+        <!--                                        implementationClass="com.plugin.frege.linemarker.related.FregeRelatedItemLineMarkerProvider"/>-->
+        <!--        <lang.psiStructureViewFactory language="go" implementationClass="com.goide.tree.GoStructureViewFactory"/>-->
+
 
         <!-- index -->
         <stubIndex implementation="com.github.pyltsin.monkeyplugin.stubs.MonkeyVarNameIndex"/>

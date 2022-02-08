@@ -6,7 +6,7 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
 import com.github.pyltsin.monkeyplugin.psi.impl.MonkeyReferenceBase;
 
-public interface MonkeySimpleRefExpr extends MonkeyExpr, MonkeyNamedElement {
+public interface MonkeySimpleRefExpr extends MonkeyExpr {
 
   @NotNull
   PsiElement getIdent();
@@ -16,12 +16,6 @@ public interface MonkeySimpleRefExpr extends MonkeyExpr, MonkeyNamedElement {
 
   @Nullable
   PsiElement resolve();
-
-  @NotNull
-  String getName();
-
-  @Nullable
-  PsiElement getNameIdentifier();
 
   @NotNull
   PsiElement setName(@NotNull String name);
