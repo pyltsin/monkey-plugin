@@ -6,13 +6,12 @@ import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFileFactory
 
-class MonkeyElementFactory {
+class MonkeyElementTextFactory {
     companion object{
-        fun createExpressionFromText(project: Project, name: String): PsiElement {
+        fun createStatementFromText(project: Project, name: String): PsiElement {
             val fileFromText: MonkeyFile =
                 createFileFromText(project, name)
-            val rhs: PsiElement = fileFromText.firstChild.firstChild.lastChild
-            return rhs.lastChild.lastChild.lastChild
+            return fileFromText.firstChild.firstChild
         }
 
         fun createFileFromText(project: Project, text: String): MonkeyFile {

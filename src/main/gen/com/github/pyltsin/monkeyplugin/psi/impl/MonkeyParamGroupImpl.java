@@ -29,8 +29,8 @@ public class MonkeyParamGroupImpl extends ASTWrapperPsiElement implements Monkey
 
   @Override
   @NotNull
-  public List<MonkeySimpleRefExpr> getSimpleRefExprList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, MonkeySimpleRefExpr.class);
+  public List<MonkeyVarDefinition> getVarDefinitionList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, MonkeyVarDefinition.class);
   }
 
 }

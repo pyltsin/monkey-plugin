@@ -227,19 +227,7 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // IDENT
-  public static boolean let_expr(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "let_expr")) return false;
-    if (!nextTokenIs(b, IDENT)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, IDENT);
-    exit_section_(b, m, LET_EXPR, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // LET let_expr ASSIGN expr
+  // LET var_definition ASSIGN expr
   public static boolean let_statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "let_statement")) return false;
     if (!nextTokenIs(b, LET)) return false;
@@ -247,7 +235,7 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, LET_STATEMENT, null);
     r = consumeToken(b, LET);
     p = r; // pin = 1
-    r = r && report_error_(b, let_expr(b, l + 1));
+    r = r && report_error_(b, var_definition(b, l + 1));
     r = p && report_error_(b, consumeToken(b, ASSIGN)) && r;
     r = p && expr(b, l + 1, -1) && r;
     exit_section_(b, l, m, r, p, null);
@@ -294,20 +282,20 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // simple_ref_expr (COMMA simple_ref_expr)*
+  // var_definition (COMMA var_definition)*
   public static boolean param_group(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param_group")) return false;
     if (!nextTokenIs(b, IDENT)) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_, PARAM_GROUP, null);
-    r = simple_ref_expr(b, l + 1);
+    r = var_definition(b, l + 1);
     p = r; // pin = 1
     r = r && param_group_1(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
 
-  // (COMMA simple_ref_expr)*
+  // (COMMA var_definition)*
   private static boolean param_group_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param_group_1")) return false;
     while (true) {
@@ -318,14 +306,14 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // COMMA simple_ref_expr
+  // COMMA var_definition
   private static boolean param_group_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "param_group_1_0")) return false;
     boolean r, p;
     Marker m = enter_section_(b, l, _NONE_);
     r = consumeToken(b, COMMA);
     p = r; // pin = 1
-    r = r && simple_ref_expr(b, l + 1);
+    r = r && var_definition(b, l + 1);
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }
@@ -438,6 +426,18 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
     r = consumeToken(b, BAD_CHARACTER);
     if (!r) r = consumeToken(b, NEW_LINE);
     exit_section_(b, l, m, r, false, null);
+    return r;
+  }
+
+  /* ********************************************************** */
+  // IDENT
+  public static boolean var_definition(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "var_definition")) return false;
+    if (!nextTokenIs(b, IDENT)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeToken(b, IDENT);
+    exit_section_(b, m, VAR_DEFINITION, r);
     return r;
   }
 

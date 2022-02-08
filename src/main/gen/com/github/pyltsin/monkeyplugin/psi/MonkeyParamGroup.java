@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface MonkeyParamGroup extends MonkeyCompositeElement {
 
   @NotNull
-  List<MonkeySimpleRefExpr> getSimpleRefExprList();
+  List<MonkeyVarDefinition> getVarDefinitionList();
 
 }

@@ -27,7 +27,6 @@ public interface MonkeyTypes {
   IElementType INDEX_EXPR = new MonkeyElementType("INDEX_EXPR");
   IElementType INTEGRAL_LITERAL = new MonkeyElementType("INTEGRAL_LITERAL");
   IElementType LESS_EXPR = new MonkeyElementType("LESS_EXPR");
-  IElementType LET_EXPR = MonkeyElementTypeFactory.factory("LET_EXPR");
   IElementType LET_STATEMENT = new MonkeyElementType("LET_STATEMENT");
   IElementType LITERAL_EXPR = new MonkeyElementType("LITERAL_EXPR");
   IElementType MAP_ARGUMENTS = new MonkeyElementType("MAP_ARGUMENTS");
@@ -47,6 +46,7 @@ public interface MonkeyTypes {
   IElementType UNARY_MIN_EXPR = new MonkeyElementType("UNARY_MIN_EXPR");
   IElementType UNARY_NOT_EXPR = new MonkeyElementType("UNARY_NOT_EXPR");
   IElementType UNUSED_IN_BNF = new MonkeyElementType("UNUSED_IN_BNF");
+  IElementType VAR_DEFINITION = MonkeyElementTypeFactory.factory("VAR_DEFINITION");
 
   IElementType ASSIGN = new MonkeyTokenType("=");
   IElementType ASTERISK = new MonkeyTokenType("*");
@@ -134,9 +134,6 @@ public interface MonkeyTypes {
       else if (type == LESS_EXPR) {
         return new MonkeyLessExprImpl(node);
       }
-      else if (type == LET_EXPR) {
-        return new MonkeyLetExprImpl(node);
-      }
       else if (type == LET_STATEMENT) {
         return new MonkeyLetStatementImpl(node);
       }
@@ -193,6 +190,9 @@ public interface MonkeyTypes {
       }
       else if (type == UNUSED_IN_BNF) {
         return new MonkeyUnusedInBnfImpl(node);
+      }
+      else if (type == VAR_DEFINITION) {
+        return new MonkeyVarDefinitionImpl(node);
       }
       throw new AssertionError("Unknown element type: " + type);
     }

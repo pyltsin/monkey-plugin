@@ -1,19 +1,18 @@
 package com.github.pyltsin.monkeyplugin.psi.impl
 
 import com.github.pyltsin.monkeyplugin.psi.MonkeyLetExpr
-import com.github.pyltsin.monkeyplugin.psi.MonkeyLetStatement
 import com.github.pyltsin.monkeyplugin.psi.impl.MonkeyPsiImplUtil.Companion.getReference
-import com.github.pyltsin.monkeyplugin.stubs.MonkeyLetExpressionStub
+import com.github.pyltsin.monkeyplugin.stubs.MonkeyVarDefinitionStub
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.psi.PsiElement
-import com.intellij.psi.PsiReference
 import com.intellij.psi.stubs.IStubElementType
+import com.intellij.psi.util.PsiTreeUtil
 
-abstract class MonkeyLetExpressionBaseImpl :
-    MonkeyNamedStubbedPsiElementBase<MonkeyLetExpressionStub>,
+abstract class MonkeyVarDefinitionBaseImpl :
+    MonkeyNamedStubbedPsiElementBase<MonkeyVarDefinitionStub>,
     MonkeyLetExpr {
-    constructor(stub: MonkeyLetExpressionStub, nodeType: IStubElementType<*, *>) : super(stub, nodeType)
+    constructor(stub: MonkeyVarDefinitionStub, nodeType: IStubElementType<*, *>) : super(stub, nodeType)
     constructor(node: ASTNode) : super(node)
 
     override fun getName(): String {
@@ -25,17 +24,17 @@ abstract class MonkeyLetExpressionBaseImpl :
         return this.node.psi
     }
 
-    override fun getReference(): PsiReference? {
+    override fun getReference(): MonkeyReferenceBase {
         return getReference(this)
     }
 
-    //todo
     override fun setName(name: String): PsiElement {
         val e: PsiElement =
-            MonkeyElementFactory.createExpressionFromText(project, "let $name = 1")
-        val monkeyLetStatement = e as MonkeyLetStatement
-        val letExpr = monkeyLetStatement.letExpr!!
-        this.replace(letExpr)
+            MonkeyElementTextFactory.createStatementFromText(project, "let $name = 1")
+        val newLetExpr = PsiTreeUtil.findChildOfType(e, MonkeyLetExpr::class.java)
+        if (newLetExpr != null) {
+            this.replace(newLetExpr)
+        }
         return this
     }
 }

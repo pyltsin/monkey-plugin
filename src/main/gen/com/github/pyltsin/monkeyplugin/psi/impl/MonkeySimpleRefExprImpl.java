@@ -45,4 +45,22 @@ public class MonkeySimpleRefExprImpl extends MonkeyExprImpl implements MonkeySim
     return MonkeyPsiImplUtil.resolve(this);
   }
 
+  @Override
+  @NotNull
+  public String getName() {
+    return MonkeyPsiImplUtil.getName(this);
+  }
+
+  @Override
+  @Nullable
+  public PsiElement getNameIdentifier() {
+    return MonkeyPsiImplUtil.getNameIdentifier(this);
+  }
+
+  @Override
+  @NotNull
+  public PsiElement setName(@NotNull String name) {
+    return MonkeyPsiImplUtil.setName(this, name);
+  }
+
 }

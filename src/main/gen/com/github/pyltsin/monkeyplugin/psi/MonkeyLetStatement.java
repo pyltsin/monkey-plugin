@@ -11,7 +11,7 @@ public interface MonkeyLetStatement extends MonkeyCompositeElement {
   MonkeyExpr getExpr();
 
   @Nullable
-  MonkeyLetExpr getLetExpr();
+  MonkeyVarDefinition getVarDefinition();
 
   @Nullable
   PsiElement getAssign();

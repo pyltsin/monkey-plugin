@@ -6,7 +6,7 @@ import com.intellij.psi.stubs.NamedStubBase
 import com.intellij.psi.stubs.StubElement
 import com.intellij.util.io.StringRef
 
-class MonkeyLetExpressionStub : NamedStubBase<MonkeyLetExpr> {
+class MonkeyVarDefinitionStub : NamedStubBase<MonkeyLetExpr> {
     constructor(parent: StubElement<*>?, elementType: IStubElementType<*, *>, name: StringRef?) : super(
         parent,
         elementType,
