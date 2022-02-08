@@ -136,7 +136,6 @@ public class MonkeyVisitor extends PsiElementVisitor {
 
   public void visitSimpleRefExpr(@NotNull MonkeySimpleRefExpr o) {
     visitExpr(o);
-    // visitNamedElement(o);
   }
 
   public void visitStatement(@NotNull MonkeyStatement o) {

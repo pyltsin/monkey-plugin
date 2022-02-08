@@ -15,16 +15,6 @@ class MonkeyPsiImplUtil {
         }
 
         @JvmStatic
-        fun getName(expr: MonkeySimpleRefExpr): String {
-            return expr.nameIdentifier!!.text
-        }
-
-        @JvmStatic
-        fun getNameIdentifier(expr: MonkeySimpleRefExpr): PsiElement? {
-            return expr.node.psi
-        }
-
-        @JvmStatic
         fun setName(expr: MonkeySimpleRefExpr, name: String): PsiElement {
             val e: PsiElement =
                 MonkeyElementTextFactory.createStatementFromText(expr.project, "$name + 1")
@@ -72,7 +62,7 @@ class MonkeyPsiImplUtil {
         }
 
         @JvmStatic
-        fun getReference(o: MonkeyLetExpr): MonkeyReferenceBase {
+        fun getUsages(o: MonkeyVarDefinition): MonkeyReferenceBase {
             val myText = o.ident.text
             val myResult = OrderedSet<PsiElement>()
             return object : MonkeyReferenceBase(o, o.textRange) {
@@ -82,7 +72,7 @@ class MonkeyPsiImplUtil {
                             if (element is MonkeySimpleRefExpr && myText == element.ident.text) {
                                 myResult.add(element)
                             }
-                            if (element is MonkeyLetExpr && myText == element.ident.text) {
+                            if (element is MonkeyVarDefinition && myText == element.ident.text) {
                                 return false
                             }
                             return true
@@ -96,7 +86,7 @@ class MonkeyPsiImplUtil {
                         statement?.nextSibling
                     }
                     while (nextSibling != null) {
-                        if (nextSibling is MonkeyLetExpr && myText == nextSibling.ident.text) {
+                        if (nextSibling is MonkeyVarDefinition && myText == nextSibling.ident.text) {
                             break
                         }
                         PsiTreeUtil.processElements(nextSibling, processor)
@@ -105,11 +95,6 @@ class MonkeyPsiImplUtil {
                     return myResult
                 }
             }
-        }
-
-        @JvmStatic
-        fun resolve(o: MonkeyLetExpr): PsiElement? {
-            return o.reference?.resolve()
         }
     }
 }

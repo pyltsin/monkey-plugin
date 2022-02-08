@@ -9,16 +9,21 @@ import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.util.PsiTreeUtil;
 import static com.github.pyltsin.monkeyplugin.MonkeyTypes.*;
 import com.github.pyltsin.monkeyplugin.psi.*;
+import com.github.pyltsin.monkeyplugin.stubs.MonkeyVarDefinitionStub;
+import com.intellij.psi.stubs.IStubElementType;
 
-public class MonkeySimpleRefExprImpl extends MonkeyExprImpl implements MonkeySimpleRefExpr {
+public class MonkeyVarDefinitionImpl extends MonkeyVarDefinitionBaseImpl implements MonkeyVarDefinition {
 
-  public MonkeySimpleRefExprImpl(@NotNull ASTNode node) {
+  public MonkeyVarDefinitionImpl(@NotNull MonkeyVarDefinitionStub stub, @NotNull IStubElementType<?, ?> type) {
+    super(stub, type);
+  }
+
+  public MonkeyVarDefinitionImpl(@NotNull ASTNode node) {
     super(node);
   }
 
-  @Override
   public void accept(@NotNull MonkeyVisitor visitor) {
-    visitor.visitSimpleRefExpr(this);
+    visitor.visitVarDefinition(this);
   }
 
   @Override
@@ -31,24 +36,6 @@ public class MonkeySimpleRefExprImpl extends MonkeyExprImpl implements MonkeySim
   @NotNull
   public PsiElement getIdent() {
     return notNullChild(findChildByType(IDENT));
-  }
-
-  @Override
-  @NotNull
-  public MonkeyReferenceBase getReference() {
-    return MonkeyPsiImplUtil.getReference(this);
-  }
-
-  @Override
-  @Nullable
-  public PsiElement resolve() {
-    return MonkeyPsiImplUtil.resolve(this);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement setName(@NotNull String name) {
-    return MonkeyPsiImplUtil.setName(this, name);
   }
 
 }
