@@ -1,13 +1,35 @@
 package com.github.pyltsin.monkeyplugin.psi.impl
 
+
+data class MonkeyTypeResolvedResult(
+    val monkeyType: MonkeyType,
+    //for simplification - error explanation. It is better to show type error, and then create message in caller.
+    val error: MonkeyTypeResolvedError?
+) : Comparable<MonkeyTypeResolvedResult> {
+    override fun compareTo(other: MonkeyTypeResolvedResult): Int {
+        return if ((error == null && other.error == null) || (error != null && other.error != null)) {
+            if (monkeyType != UNKNOWN_TYPE && other.monkeyType == UNKNOWN_TYPE) {
+                1
+            } else if (monkeyType == UNKNOWN_TYPE && other.monkeyType != UNKNOWN_TYPE) {
+                -1
+            } else {
+                0
+            }
+        } else if (error == null) {
+            1
+        } else {
+            -1
+        }
+    }
+}
+
+data class MonkeyTypeResolvedError(val explanation: String)
+
 interface MonkeyType {
 }
 
-class MaybeMonkeyType(private val builtInTypes: List<MonkeyBuiltInType>) : MonkeyType {
-    fun getType(): List<MonkeyBuiltInType> {
-        return builtInTypes
-    }
-}
+data class MonkeyErrorType(val explanation: String);
+
 
 class CertainMonkeyType(private val builtInType: MonkeyBuiltInType) : MonkeyType {
     fun getType(): MonkeyBuiltInType {

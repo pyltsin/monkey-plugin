@@ -1,17 +1,25 @@
 package com.github.pyltsin.monkeyplugin.psi.impl
 
 import com.github.pyltsin.monkeyplugin.psi.*
+import com.intellij.openapi.util.Computable
+import com.intellij.openapi.util.RecursionManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.PsiElementProcessor
+import com.intellij.psi.util.CachedValueProvider
+import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.util.PsiTreeUtil
 import com.intellij.util.containers.OrderedSet
 
 class MonkeyPsiImplUtil {
     companion object {
         @JvmStatic
-        fun resolveType(expr: MonkeyExpr): MonkeyType {
-            //todo
-            return UNKNOWN_TYPE
+        fun resolveType(expr: MonkeyExpr): MonkeyTypeResolvedResult {
+            val result: MonkeyTypeResolvedResult? = RecursionManager.doPreventingRecursion(expr, true) {
+                CachedValuesManager.getCachedValue(expr) {
+                    CachedValueProvider.Result.create(TypeResolver.resolveType(expr), expr)
+                }
+            }
+            return result ?: MonkeyTypeResolvedResult(UNKNOWN_TYPE, MonkeyTypeResolvedError("Can't resolve type"))
         }
 
         @JvmStatic
@@ -37,13 +45,13 @@ class MonkeyPsiImplUtil {
                         while (parentNext != null) {
                             val firstChild = parentNext.firstChild
                             if (firstChild is MonkeyLetStatement && myText == firstChild.varDefinition?.ident?.text) {
-                                myResult.add(element)
+                                myResult.add(firstChild)
                             }
 
                             if (parentNext is MonkeyParamGroup) {
                                 parentNext.varDefinitionList.forEach {
                                     if (it.ident.text == myText) {
-                                        myResult.add(element)
+                                        myResult.add(it)
                                     }
                                 }
                             }

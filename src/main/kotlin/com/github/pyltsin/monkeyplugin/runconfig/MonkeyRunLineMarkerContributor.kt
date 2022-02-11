@@ -2,11 +2,13 @@ package com.github.pyltsin.monkeyplugin.runconfig
 
 import com.github.pyltsin.monkeyplugin.MonkeyLanguage
 import com.github.pyltsin.monkeyplugin.psi.MonkeyAll
+import com.github.pyltsin.monkeyplugin.psi.MonkeyExpr
 import com.intellij.execution.lineMarker.ExecutorAction
 import com.intellij.execution.lineMarker.RunLineMarkerContributor
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.psi.PsiElement
+import com.intellij.psi.impl.source.tree.LeafPsiElement
 
 class MonkeyRunLineMarkerContributor : RunLineMarkerContributor() {
     override fun getInfo(element: PsiElement): Info? {
@@ -14,7 +16,15 @@ class MonkeyRunLineMarkerContributor : RunLineMarkerContributor() {
             return null
         }
 
-        if (element.children.isNotEmpty()) {
+        if (!element.isValid) {
+            return null
+        }
+
+        if (element !is LeafPsiElement) {
+            return null
+        }
+
+        if (element.children.isNotEmpty() || element is MonkeyExpr) {
             return null
         }
 
@@ -29,8 +39,8 @@ class MonkeyRunLineMarkerContributor : RunLineMarkerContributor() {
             currentElement = currentElement.parent
         }
 
-        val actions: Array<AnAction> = ExecutorAction.getActions()
+        val action: AnAction = ExecutorAction.getActions(0)[0]
 
-        return Info(AllIcons.RunConfigurations.TestState.Run, actions) { "Run all" }
+        return Info(AllIcons.RunConfigurations.TestState.Run, arrayListOf(action).toTypedArray()) { "Run" }
     }
 }

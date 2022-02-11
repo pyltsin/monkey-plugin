@@ -28,7 +28,7 @@ INT=[0-9]+
 STRING=\"[^\"]*\"
 IDENT=[a-zA-Z_]+
 
-NEW_LINE=(\r|\n|\r\n)
+NEW_LINE=(\r|\n|\r\n)+
 WHITE_SPACE=(\s|\t)+
 
 %%
@@ -66,7 +66,6 @@ WHITE_SPACE=(\s|\t)+
   {IDENT}            { return IDENT; }
   {NEW_LINE}         { return NEW_LINE; }
   {WHITE_SPACE}      { return WHITE_SPACE; }
-
 }
 
 [^] { return BAD_CHARACTER; }

@@ -9,6 +9,8 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.TokenType
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.formatter.common.AbstractBlock
+import com.intellij.psi.util.elementType
+
 
 class MonkeyFormattingModelBuilder : FormattingModelBuilder {
     companion object {
@@ -46,9 +48,7 @@ class MonkeyFormattingModelBuilder : FormattingModelBuilder {
         )
 
         return FormattingModelProvider.createFormattingModelForPsiFile(
-            context.containingFile,
-            block,
-            settings
+            context.containingFile, block, settings
         )
     }
 
@@ -57,7 +57,7 @@ class MonkeyFormattingModelBuilder : FormattingModelBuilder {
     }
 
     private class MonkeyFormattingBlock(
-        myNode: ASTNode,
+        val myNode: ASTNode,
         myAlignment: Alignment?,
         private val myIndent: Indent?,
         myWrap: Wrap?,
@@ -71,6 +71,14 @@ class MonkeyFormattingModelBuilder : FormattingModelBuilder {
 
         override fun getAlignment(): Alignment? {
             return myAlignment
+        }
+
+        override fun getChildIndent(): Indent? {
+            val type = myNode.psi.elementType
+            if (type == MonkeyTypes.FUNC_EXPR || type==MonkeyTypes.IF_EXPR || type==MonkeyTypes.ELSE_BLOCK) {
+                return Indent.getNormalIndent(true)
+            }
+            return Indent.getNoneIndent()
         }
 
         private fun calcIndent(child: ASTNode): Indent {
@@ -98,7 +106,7 @@ class MonkeyFormattingModelBuilder : FormattingModelBuilder {
                     child = child.treeNext
                     continue
                 }
-                if (childType === TokenType.WHITE_SPACE) {
+                if (childType == TokenType.WHITE_SPACE || childType == MonkeyTypes.NEW_LINE) {
                     child = child.treeNext
                     continue
                 }
