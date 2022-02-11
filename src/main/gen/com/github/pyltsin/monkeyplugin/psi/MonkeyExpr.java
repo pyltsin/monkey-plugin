@@ -4,11 +4,11 @@ package com.github.pyltsin.monkeyplugin.psi;
 import java.util.List;
 import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElement;
-import com.github.pyltsin.monkeyplugin.psi.impl.MonkeyType;
+import com.github.pyltsin.monkeyplugin.psi.impl.MonkeyTypeResolvedResult;
 
 public interface MonkeyExpr extends MonkeyCompositeElement {
 
   @NotNull
-  MonkeyType resolveType();
+  MonkeyTypeResolvedResult resolveType();
 
 }

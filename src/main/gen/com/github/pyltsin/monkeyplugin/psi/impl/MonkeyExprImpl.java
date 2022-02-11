@@ -29,7 +29,7 @@ public abstract class MonkeyExprImpl extends ASTWrapperPsiElement implements Mon
 
   @Override
   @NotNull
-  public MonkeyType resolveType() {
+  public MonkeyTypeResolvedResult resolveType() {
     return MonkeyPsiImplUtil.resolveType(this);
   }
 

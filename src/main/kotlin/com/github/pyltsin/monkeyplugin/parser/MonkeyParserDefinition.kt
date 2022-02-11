@@ -68,7 +68,15 @@ class MonkeyParserDefinition() : ParserDefinition {
 
         @JvmStatic
         val KEYWORDS =
-            TokenSet.create(MonkeyTypes.LET, MonkeyTypes.FUNCTION, MonkeyTypes.RETURN, MonkeyTypes.IF, MonkeyTypes.ELSE)
+            TokenSet.create(
+                MonkeyTypes.LET,
+                MonkeyTypes.FUNCTION,
+                MonkeyTypes.RETURN,
+                MonkeyTypes.IF,
+                MonkeyTypes.ELSE,
+                MonkeyTypes.TRUE,
+                MonkeyTypes.FALSE
+            )
 
         @JvmStatic
         val WHITE_SPACES = TokenSet.create(MonkeyTypes.NEW_LINE, WHITE_SPACE)

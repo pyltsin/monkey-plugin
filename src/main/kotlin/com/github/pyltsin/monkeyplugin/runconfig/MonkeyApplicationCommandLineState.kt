@@ -14,11 +14,10 @@ class MonkeyApplicationCommandLineState(
 ) :
     CommandLineState(environment) {
     override fun startProcess(): ProcessHandler {
-        val project: Project = monkeyRunConfiguration.getProject()
         val commandLine = GeneralCommandLine()
         commandLine.exePath = monkeyRunConfiguration.pathToGo
         val parametersList = commandLine.parametersList
-        parametersList.add(monkeyRunConfiguration.pathToMonkey)
+        parametersList.add(monkeyRunConfiguration.pathToFile)
         val handler = KillableColoredProcessHandler(commandLine, true)
         ProcessTerminatedListener.attach(handler)
         return handler
