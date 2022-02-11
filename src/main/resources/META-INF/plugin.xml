@@ -60,7 +60,7 @@
         <!--                                implementationClass="com.plugin.frege.completion.FregeKeywordCompletionContributor"/>-->
         <!--        <codeInsight.lineMarkerProvider language="Frege"-->
         <!--                                        implementationClass="com.plugin.frege.linemarker.related.FregeRelatedItemLineMarkerProvider"/>-->
-        <!--        <lang.psiStructureViewFactory language="go" implementationClass="com.goide.tree.GoStructureViewFactory"/>-->
+        <lang.psiStructureViewFactory language="Monkey" implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyStructureViewFactory"/>
 
 
         <!-- index -->

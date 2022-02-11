@@ -11,7 +11,7 @@
 // 6 - reference contributor
 // 7 - найти определение
 // 8 - найти использование
-// 9 - structure view
+// + 9 - structure view
 // 10.1 - rename
 // + 10 - stubs
 // 11 - тесты
