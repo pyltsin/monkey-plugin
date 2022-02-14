@@ -1,8 +1,8 @@
 package com.github.pyltsin.monkeyplugin.psi.impl
 
 import com.github.pyltsin.monkeyplugin.psi.*
-import com.intellij.openapi.util.Computable
 import com.intellij.openapi.util.RecursionManager
+import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.search.PsiElementProcessor
 import com.intellij.psi.util.CachedValueProvider
@@ -37,21 +37,24 @@ class MonkeyPsiImplUtil {
         fun getReference(o: MonkeySimpleRefExpr): MonkeyReferenceBase {
             val myText = o.ident.text
             val myResult = OrderedSet<PsiElement>()
-            return object : MonkeyReferenceBase(o, o.textRange) {
+            return object : MonkeyReferenceBase(o, TextRange(0, o.textLength)) {
                 override fun resolveInner(incompleteCode: Boolean): List<PsiElement> {
                     var parent: PsiElement? = PsiTreeUtil.getParentOfType(o, MonkeyStatement::class.java)
                     while (parent !is MonkeyAll && parent != null) {
                         var parentNext = parent.prevSibling
                         while (parentNext != null) {
                             val firstChild = parentNext.firstChild
-                            if (firstChild is MonkeyLetStatement && myText == firstChild.varDefinition?.ident?.text) {
-                                myResult.add(firstChild)
+                            if (firstChild is MonkeyLetStatement) {
+                                val ident = firstChild.varDefinition?.ident
+                                if (ident?.textMatches(myText) == true) {
+                                    myResult.add(ident)
+                                }
                             }
 
                             if (parentNext is MonkeyParamGroup) {
                                 parentNext.varDefinitionList.forEach {
                                     if (it.ident.text == myText) {
-                                        myResult.add(it)
+                                        myResult.add(it.ident)
                                     }
                                 }
                             }
@@ -78,7 +81,7 @@ class MonkeyPsiImplUtil {
                     val processor = object : PsiElementProcessor<PsiElement> {
                         override fun execute(element: PsiElement): Boolean {
                             if (element is MonkeySimpleRefExpr && myText == element.ident.text) {
-                                myResult.add(element)
+                                myResult.add(element.ident)
                             }
                             if (element is MonkeyVarDefinition && myText == element.ident.text) {
                                 return false
