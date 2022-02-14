@@ -58,8 +58,8 @@
         <!--        <renameInputValidator implementation="com.plugin.frege.refactor.FregeRenameInputValidator"/>-->
         <!--        <completion.contributor language="Frege"-->
         <!--                                implementationClass="com.plugin.frege.completion.FregeKeywordCompletionContributor"/>-->
-        <!--        <codeInsight.lineMarkerProvider language="Frege"-->
-        <!--                                        implementationClass="com.plugin.frege.linemarker.related.FregeRelatedItemLineMarkerProvider"/>-->
+                <codeInsight.lineMarkerProvider language="Monkey"
+                                                implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyFunctionLineMarkerProvider"/>
         <lang.psiStructureViewFactory language="Monkey" implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyStructureViewFactory"/>
 
 

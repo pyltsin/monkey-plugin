@@ -4,8 +4,8 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.*
 import com.intellij.psi.impl.source.resolve.ResolveCache
 
-abstract class MonkeyReferenceBase(@JvmField protected val psiElement: PsiElement, range: TextRange) :
-    PsiReferenceBase<PsiElement?>(psiElement, range), PsiPolyVariantReference {
+abstract class MonkeyReferenceBase(@JvmField protected val psiElement: PsiElement, rangeInParent: TextRange) :
+    PsiReferenceBase<PsiElement?>(psiElement, rangeInParent), PsiPolyVariantReference {
 
     protected abstract fun resolveInner(incompleteCode: Boolean): List<PsiElement>
 
