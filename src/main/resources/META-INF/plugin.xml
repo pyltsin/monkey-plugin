@@ -50,8 +50,9 @@
         <annotator language="Monkey"
                    implementationClass="com.github.pyltsin.monkeyplugin.annotator.MonkeyWarningAnnotator"/>
 
-<!--        <lang.findUsagesProvider language="Monkey"-->
-<!--                                 implementationClass="com.github.pyltsin.monkeyplugin.usages.MonkeyFindUsagesProvider"/>-->
+        <elementDescriptionProvider implementation="com.github.pyltsin.monkeyplugin.usages.MonkeyDescriptionProvider"/>
+        <lang.findUsagesProvider language="Monkey"
+                                 implementationClass="com.github.pyltsin.monkeyplugin.usages.MonkeyFindUsagesProvider"/>
         <gotoSymbolContributor implementation="com.github.pyltsin.monkeyplugin.usages.MonkeySymbolContributor"/>
 
         <!--    todo    -->

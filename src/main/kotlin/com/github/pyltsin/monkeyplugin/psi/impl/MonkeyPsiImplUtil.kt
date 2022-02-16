@@ -24,8 +24,7 @@ class MonkeyPsiImplUtil {
 
         @JvmStatic
         fun setName(expr: MonkeySimpleRefExpr, name: String): PsiElement {
-            val e: PsiElement =
-                MonkeyElementTextFactory.createStatementFromText(expr.project, "$name + 1")
+            val e: PsiElement = MonkeyElementTextFactory.createStatementFromText(expr.project, "$name + 1")
             val newLetExpr = PsiTreeUtil.findChildOfType(e, MonkeySimpleRefExpr::class.java)
             if (newLetExpr != null) {
                 expr.replace(newLetExpr)
@@ -38,6 +37,13 @@ class MonkeyPsiImplUtil {
             val myText = o.ident.text
             val myResult = OrderedSet<PsiElement>()
             return object : MonkeyReferenceBase(o, TextRange(0, o.textLength)) {
+                override fun isReferenceTo(element: PsiElement): Boolean {
+                    val resolved = resolve()
+                    val manager = getElement().manager
+                    return manager.areElementsEquivalent(resolved, element)
+                            || manager.areElementsEquivalent(resolved?.parent, element)
+                }
+
                 override fun resolveInner(incompleteCode: Boolean): List<PsiElement> {
                     var parent: PsiElement? = PsiTreeUtil.getParentOfType(o, MonkeyStatement::class.java)
                     while (parent !is MonkeyAll && parent != null) {
@@ -70,42 +76,6 @@ class MonkeyPsiImplUtil {
         @JvmStatic
         fun resolve(o: MonkeySimpleRefExpr): PsiElement? {
             return o.reference.resolve()
-        }
-
-        @JvmStatic
-        fun getUsages(o: MonkeyVarDefinition): MonkeyReferenceBase {
-            val myText = o.ident.text
-            val myResult = OrderedSet<PsiElement>()
-            return object : MonkeyReferenceBase(o, o.textRange) {
-                override fun resolveInner(incompleteCode: Boolean): List<PsiElement> {
-                    val processor = object : PsiElementProcessor<PsiElement> {
-                        override fun execute(element: PsiElement): Boolean {
-                            if (element is MonkeySimpleRefExpr && myText == element.ident.text) {
-                                myResult.add(element.ident)
-                            }
-                            if (element is MonkeyVarDefinition && myText == element.ident.text) {
-                                return false
-                            }
-                            return true
-                        }
-                    }
-                    val statement = o.parent?.parent
-                    var nextSibling: PsiElement?
-                    nextSibling = if (statement is MonkeyFuncExpr) {
-                        PsiTreeUtil.findChildOfType(statement, MonkeyBlockState::class.java)?.firstChild
-                    } else {
-                        statement?.nextSibling
-                    }
-                    while (nextSibling != null) {
-                        if (nextSibling is MonkeyVarDefinition && myText == nextSibling.ident.text) {
-                            break
-                        }
-                        PsiTreeUtil.processElements(nextSibling, processor)
-                        nextSibling = nextSibling.nextSibling
-                    }
-                    return myResult
-                }
-            }
         }
     }
 }
