@@ -50,9 +50,11 @@
         <annotator language="Monkey"
                    implementationClass="com.github.pyltsin.monkeyplugin.annotator.MonkeyWarningAnnotator"/>
 
+<!--        <lang.findUsagesProvider language="Monkey"-->
+<!--                                 implementationClass="com.github.pyltsin.monkeyplugin.usages.MonkeyFindUsagesProvider"/>-->
+        <gotoSymbolContributor implementation="com.github.pyltsin.monkeyplugin.usages.MonkeySymbolContributor"/>
+
         <!--    todo    -->
-        <!--        <lang.findUsagesProvider language="Frege"-->
-        <!--                                 implementationClass="com.plugin.frege.findusages.FregeFindUsagesProvider"/>-->
         <!--        <lang.refactoringSupport language="Frege"-->
         <!--                                 implementationClass="com.plugin.frege.refactor.FregeRefactoringSupportProvider"/>-->
         <!--        <renameInputValidator implementation="com.plugin.frege.refactor.FregeRenameInputValidator"/>-->
