@@ -4,7 +4,6 @@ import com.github.pyltsin.monkeyplugin.psi.*
 import com.intellij.openapi.util.RecursionManager
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
-import com.intellij.psi.search.PsiElementProcessor
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.util.CachedValuesManager
 import com.intellij.psi.util.PsiTreeUtil
