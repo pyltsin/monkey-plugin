@@ -54,16 +54,18 @@
         <lang.findUsagesProvider language="Monkey"
                                  implementationClass="com.github.pyltsin.monkeyplugin.usages.MonkeyFindUsagesProvider"/>
         <gotoSymbolContributor implementation="com.github.pyltsin.monkeyplugin.usages.MonkeySymbolContributor"/>
+        <lang.refactoringSupport language="Monkey"
+                                 implementationClass="com.github.pyltsin.monkeyplugin.refactor.MonkeyRefactoringSupportProvider"/>
+        <renameInputValidator implementation="com.github.pyltsin.monkeyplugin.refactor.MonkeyRenameInputValidator"/>
+
 
         <!--    todo    -->
-        <!--        <lang.refactoringSupport language="Frege"-->
-        <!--                                 implementationClass="com.plugin.frege.refactor.FregeRefactoringSupportProvider"/>-->
-        <!--        <renameInputValidator implementation="com.plugin.frege.refactor.FregeRenameInputValidator"/>-->
         <!--        <completion.contributor language="Frege"-->
         <!--                                implementationClass="com.plugin.frege.completion.FregeKeywordCompletionContributor"/>-->
-                <codeInsight.lineMarkerProvider language="Monkey"
-                                                implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyFunctionLineMarkerProvider"/>
-        <lang.psiStructureViewFactory language="Monkey" implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyStructureViewFactory"/>
+        <codeInsight.lineMarkerProvider language="Monkey"
+                                        implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyFunctionLineMarkerProvider"/>
+        <lang.psiStructureViewFactory language="Monkey"
+                                      implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyStructureViewFactory"/>
 
 
         <!-- index -->
