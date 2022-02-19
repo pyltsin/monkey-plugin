@@ -37,9 +37,9 @@ class MonkeyPsiImplUtil {
             val myResult = OrderedSet<PsiElement>()
             return object : MonkeyReferenceBase(o, TextRange(0, o.textLength)) {
                 override fun handleElementRename(newElementName: String): PsiElement? {
-                    return when(val currentElement = element){
+                    return when (val currentElement = element) {
                         is MonkeySimpleRefExpr -> setName(currentElement, newElementName)
-                        else->return null
+                        else -> return null
                     }
                 }
 
@@ -58,14 +58,14 @@ class MonkeyPsiImplUtil {
                             val firstChild = parentNext.firstChild
                             if (firstChild is MonkeyLetStatement) {
                                 val ident = firstChild.varDefinition?.ident
-                                if (ident?.textMatches(myText) == true) {
+                                if (incompleteCode || ident?.textMatches(myText) == true) {
                                     myResult.add(firstChild.varDefinition)
                                 }
                             }
 
                             if (parentNext is MonkeyParamGroup) {
                                 parentNext.varDefinitionList.forEach {
-                                    if (it.ident.text == myText) {
+                                    if (incompleteCode || it.ident.text == myText) {
                                         myResult.add(it)
                                     }
                                 }
