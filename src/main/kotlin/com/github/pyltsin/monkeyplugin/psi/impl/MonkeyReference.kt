@@ -29,6 +29,10 @@ abstract class MonkeyReferenceBase(@JvmField protected val psiElement: PsiElemen
         return if (other is MonkeyReferenceBase) psiElement == other.psiElement else false
     }
 
+    override fun getVariants(): Array<Any> {
+        return resolveInner(true).toTypedArray()
+    }
+
     override fun hashCode(): Int {
         return psiElement.hashCode()
     }

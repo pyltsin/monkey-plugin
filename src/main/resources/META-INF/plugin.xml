@@ -59,9 +59,8 @@
         <renameInputValidator implementation="com.github.pyltsin.monkeyplugin.refactor.MonkeyRenameInputValidator"/>
 
 
-        <!--    todo    -->
-        <!--        <completion.contributor language="Frege"-->
-        <!--                                implementationClass="com.plugin.frege.completion.FregeKeywordCompletionContributor"/>-->
+                <completion.contributor language="Monkey"
+                                        implementationClass="com.github.pyltsin.monkeyplugin.completion.MonkeyKeywordCompletionContributor"/>
         <codeInsight.lineMarkerProvider language="Monkey"
                                         implementationClass="com.github.pyltsin.monkeyplugin.editor.MonkeyFunctionLineMarkerProvider"/>
         <lang.psiStructureViewFactory language="Monkey"
