@@ -11,13 +11,11 @@ class MonkeyVarDefinitionStub : NamedStubBase<MonkeyVarDefinition> {
         parent,
         elementType,
         name
-    ) {
-    }
+    )
 
     constructor(parent: StubElement<*>?, elementType: IStubElementType<*, *>, name: String?) : super(
         parent,
         elementType,
         name
-    ) {
-    }
+    )
 }

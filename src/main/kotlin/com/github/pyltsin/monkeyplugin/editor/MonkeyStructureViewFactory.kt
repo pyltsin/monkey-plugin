@@ -13,7 +13,7 @@ import com.intellij.psi.util.PsiTreeUtil
 
 //show only first level definition
 class MonkeyStructureViewFactory : PsiStructureViewFactory {
-    override fun getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder? {
+    override fun getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder {
         return object : TreeBasedStructureViewBuilder() {
             override fun createStructureViewModel(editor: Editor?): StructureViewModel {
                 return MonkeyModel(psiFile, editor)

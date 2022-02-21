@@ -1,3 +1,5 @@
+@file:Suppress("DuplicatedCode")
+
 package com.github.pyltsin.monkeyplugin.psi.impl
 
 import com.github.pyltsin.monkeyplugin.psi.*

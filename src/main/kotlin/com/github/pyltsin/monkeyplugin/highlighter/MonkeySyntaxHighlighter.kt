@@ -10,9 +10,8 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 
 class MonkeySyntaxHighlighter : SyntaxHighlighterBase() {
-    private val ATTRIBUTES: Map<IElementType, TextAttributesKey> = HashMap()
+    private val attributes: Map<IElementType, TextAttributesKey> = HashMap()
 
-    //todo add annotator - see Go
     companion object{
         val GLOBAL_IDENTIFIER = TextAttributesKey.createTextAttributesKey("GLOBAL_IDENTIFIER", DefaultLanguageHighlighterColors.GLOBAL_VARIABLE)
         val KEYWORDS = TextAttributesKey.createTextAttributesKey("MONKEY_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
@@ -31,38 +30,21 @@ class MonkeySyntaxHighlighter : SyntaxHighlighterBase() {
         val BRACKETS = TextAttributesKey.createTextAttributesKey("MOKNEY_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS)
         val PARENTHESES = TextAttributesKey.createTextAttributesKey("MOKNEY_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES)
         val BRACES = TextAttributesKey.createTextAttributesKey("MOKNEY_BRACES", DefaultLanguageHighlighterColors.BRACES)
-        //todo comment
-//    val LINE_COMMENT =
-//        TextAttributesKey.createTextAttributesKey("MOKNEY_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT)
-//    val BLOCK_COMMENT =
-//        TextAttributesKey.createTextAttributesKey(
-//            "MOKNEY_BLOCK_COMMENT",
-//            DefaultLanguageHighlighterColors.BLOCK_COMMENT
-//        )
     }
 
     init {
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.KEYWORDS, KEYWORDS)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.NUMBERS, NUMBER)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.STRINGS, STRING)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.OPERATORS, OPERATORS)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.IDENTIFIER, IDENTIFIER)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.BAD_CHARACTER, BAD_CHARACTER)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.COMMA, COMMA)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.PARENTHESES, PARENTHESES)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.BRACES, BRACES)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.BRACKETS, BRACKETS)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.COLON, COLON)
-        fillMap(ATTRIBUTES, MonkeyParserDefinition.SEMICOLON, SEMICOLON)
-
-        //todo comment
-//        fillMap(ATTRIBUTES, LINE_COMMENT, GoParserDefinition.LINE_COMMENT)
-//        fillMap(
-//            ATTRIBUTES,
-//            BLOCK_COMMENT,
-//            GoParserDefinition.MULTILINE_COMMENT
-//        )
-
+        fillMap(attributes, MonkeyParserDefinition.KEYWORDS, KEYWORDS)
+        fillMap(attributes, MonkeyParserDefinition.NUMBERS, NUMBER)
+        fillMap(attributes, MonkeyParserDefinition.STRINGS, STRING)
+        fillMap(attributes, MonkeyParserDefinition.OPERATORS, OPERATORS)
+        fillMap(attributes, MonkeyParserDefinition.IDENTIFIER, IDENTIFIER)
+        fillMap(attributes, MonkeyParserDefinition.BAD_CHARACTER, BAD_CHARACTER)
+        fillMap(attributes, MonkeyParserDefinition.COMMA, COMMA)
+        fillMap(attributes, MonkeyParserDefinition.PARENTHESES, PARENTHESES)
+        fillMap(attributes, MonkeyParserDefinition.BRACES, BRACES)
+        fillMap(attributes, MonkeyParserDefinition.BRACKETS, BRACKETS)
+        fillMap(attributes, MonkeyParserDefinition.COLON, COLON)
+        fillMap(attributes, MonkeyParserDefinition.SEMICOLON, SEMICOLON)
     }
 
     override fun getHighlightingLexer(): Lexer {
@@ -70,6 +52,6 @@ class MonkeySyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> {
-        return pack(ATTRIBUTES.get(tokenType))
+        return pack(attributes[tokenType])
     }
 }

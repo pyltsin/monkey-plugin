@@ -6,7 +6,6 @@ import com.intellij.execution.process.KillableColoredProcessHandler
 import com.intellij.execution.process.ProcessHandler
 import com.intellij.execution.process.ProcessTerminatedListener
 import com.intellij.execution.runners.ExecutionEnvironment
-import com.intellij.openapi.project.Project
 
 class MonkeyApplicationCommandLineState(
     environment: ExecutionEnvironment,

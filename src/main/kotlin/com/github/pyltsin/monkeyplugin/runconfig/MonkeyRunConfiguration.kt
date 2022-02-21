@@ -1,6 +1,5 @@
 package com.github.pyltsin.monkeyplugin.runconfig
 
-import com.intellij.execution.ExecutionBundle
 import com.intellij.execution.Executor
 import com.intellij.execution.configuration.AbstractRunConfiguration
 import com.intellij.execution.configurations.RunConfiguration
@@ -21,7 +20,7 @@ class MonkeyRunConfiguration(
     var pathToGo: String = ""
     var pathToFile: String = ""
 
-    override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState? {
+    override fun getState(executor: Executor, environment: ExecutionEnvironment): RunProfileState {
         return MonkeyApplicationCommandLineState(environment, this)
     }
 
