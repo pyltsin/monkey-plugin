@@ -9,7 +9,7 @@ import com.intellij.openapi.options.colors.ColorSettingsPage
 import javax.swing.Icon
 
 class MonkeyColorSettingsPage : ColorSettingsPage {
-    private val DESCRIPTORS = arrayOf(
+    private val descriptors = arrayOf(
         AttributesDescriptor("Keyword", MonkeySyntaxHighlighter.KEYWORDS),
         AttributesDescriptor("Number", MonkeySyntaxHighlighter.NUMBER),
         AttributesDescriptor("String", MonkeySyntaxHighlighter.STRING),
@@ -20,7 +20,7 @@ class MonkeyColorSettingsPage : ColorSettingsPage {
     )
 
     override fun getAttributeDescriptors(): Array<AttributesDescriptor> {
-        return DESCRIPTORS
+        return descriptors
     }
 
     override fun getColorDescriptors(): Array<ColorDescriptor> {
@@ -31,12 +31,12 @@ class MonkeyColorSettingsPage : ColorSettingsPage {
         return "Monkey"
     }
 
-    override fun getIcon(): Icon? {
-        return MonkeyIcons.FILE;
+    override fun getIcon(): Icon {
+        return MonkeyIcons.FILE
     }
 
     override fun getHighlighter(): SyntaxHighlighter {
-        return MonkeySyntaxHighlighter();
+        return MonkeySyntaxHighlighter()
     }
 
     override fun getDemoText(): String {

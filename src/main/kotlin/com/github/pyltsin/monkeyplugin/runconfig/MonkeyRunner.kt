@@ -4,8 +4,9 @@ import com.intellij.execution.configurations.RunProfile
 import com.intellij.execution.executors.DefaultRunExecutor
 import com.intellij.execution.runners.DefaultProgramRunner
 
+private const val MONKEY_RUNNER_ID = "MonkeyRunner"
+
 class MonkeyRunner : DefaultProgramRunner() {
-    private val MONKEY_RUNNER_ID = "MonkeyRunner"
 
     override fun getRunnerId(): String {
         return MONKEY_RUNNER_ID

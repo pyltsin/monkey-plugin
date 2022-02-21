@@ -12,7 +12,7 @@ class MonkeyCompositeElementImpl(node: ASTNode) : ASTWrapperPsiElement(node), Mo
         return node.elementType.toString()
     }
 
-    override fun getPresentation(): ItemPresentation? {
+    override fun getPresentation(): ItemPresentation {
         val text = UsageViewUtil.createNodeText(this)
         return object : ItemPresentation {
             override fun getPresentableText(): String {

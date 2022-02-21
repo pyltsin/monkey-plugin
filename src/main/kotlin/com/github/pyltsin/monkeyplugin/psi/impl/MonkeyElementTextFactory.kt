@@ -14,7 +14,7 @@ class MonkeyElementTextFactory {
             return fileFromText.firstChild.firstChild
         }
 
-        fun createFileFromText(project: Project, text: String): MonkeyFile {
+        private fun createFileFromText(project: Project, text: String): MonkeyFile {
             return PsiFileFactory.getInstance(project)
                 .createFileFromText("A.monkey", MonkeyLanguage.INSTANCE, text) as MonkeyFile
         }

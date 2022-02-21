@@ -3,9 +3,6 @@ package com.github.pyltsin.monkeyplugin.usages
 import com.github.pyltsin.monkeyplugin.MonkeyCodeInsightFixtureTestCase
 import com.github.pyltsin.monkeyplugin.psi.MonkeyLetStatement
 import com.github.pyltsin.monkeyplugin.psi.MonkeyVarDefinition
-import com.github.pyltsin.monkeyplugin.psi.impl.MonkeyReferenceBase
-import com.intellij.psi.PsiReference
-import com.intellij.testFramework.UsefulTestCase
 
 
 class FindUsagesTest : MonkeyCodeInsightFixtureTestCase() {

@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.github.pyltsin.monkeyplugin.psi.impl
 
 
@@ -25,13 +27,13 @@ data class MonkeyTypeResolvedResult(
 
 data class MonkeyTypeResolvedError(val explanation: String)
 
-interface MonkeyType {
-}
+interface MonkeyType
 
-data class MonkeyErrorType(val explanation: String);
+data class MonkeyErrorType(val explanation: String)
 
 
 class CertainMonkeyType(private val builtInType: MonkeyBuiltInType) : MonkeyType {
+    @Suppress("unused")
     fun getType(): MonkeyBuiltInType {
         return builtInType
     }

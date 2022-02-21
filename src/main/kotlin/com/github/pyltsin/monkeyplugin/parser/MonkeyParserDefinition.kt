@@ -17,10 +17,11 @@ import com.intellij.psi.TokenType.WHITE_SPACE
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 
-class MonkeyParserDefinition() : ParserDefinition {
+class MonkeyParserDefinition : ParserDefinition {
 
     companion object {
 
+        @Suppress("unused")
         @JvmStatic
         val FILE = IFileElementType(MonkeyLanguage.INSTANCE)
 
