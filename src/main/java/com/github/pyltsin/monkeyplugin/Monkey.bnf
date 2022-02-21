@@ -13,7 +13,12 @@
 // + 9 - structure view
 // + 10.1 - rename
 // + 10 - stubs
-// 11 - тесты
+// + 11 - тесты
+// + 11.4 - annotator
+// + 11.5 - formatter
+// + 11.6 - rename
+// + 11.8 - find usage
+// + 11.10 - reference
 // + 12 - скобки
 {
   parserClass="com.github.pyltsin.monkeyplugin.parser.MonkeyParser"
