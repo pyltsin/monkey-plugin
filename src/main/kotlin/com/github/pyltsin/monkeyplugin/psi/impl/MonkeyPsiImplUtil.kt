@@ -53,6 +53,14 @@ class MonkeyPsiImplUtil {
                 override fun resolveInner(incompleteCode: Boolean): List<PsiElement> {
                     var parent: PsiElement? = PsiTreeUtil.getParentOfType(o, MonkeyStatement::class.java)
                     while (parent !is MonkeyAll && parent != null) {
+
+                        if (parent is MonkeyLetStatement) {
+                            val ident = parent.varDefinition?.ident
+                            if (incompleteCode || ident?.textMatches(myText) == true) {
+                                myResult.add(parent.varDefinition)
+                            }
+                        }
+
                         var parentNext = parent.prevSibling
                         while (parentNext != null) {
                             val firstChild = parentNext.firstChild

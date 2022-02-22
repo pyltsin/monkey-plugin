@@ -243,28 +243,41 @@ public class MonkeyParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // (expr COLON expr)*
+  // expr COLON expr (COMMA expr COLON expr)*
   public static boolean map_arguments(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "map_arguments")) return false;
-    Marker m = enter_section_(b, l, _NONE_, MAP_ARGUMENTS, "<map arguments>");
-    while (true) {
-      int c = current_position_(b);
-      if (!map_arguments_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "map_arguments", c)) break;
-    }
-    exit_section_(b, l, m, true, false, null);
-    return true;
-  }
-
-  // expr COLON expr
-  private static boolean map_arguments_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "map_arguments_0")) return false;
     boolean r, p;
-    Marker m = enter_section_(b, l, _NONE_);
+    Marker m = enter_section_(b, l, _NONE_, MAP_ARGUMENTS, "<map arguments>");
     r = expr(b, l + 1, -1);
     r = r && consumeToken(b, COLON);
     p = r; // pin = 2
+    r = r && report_error_(b, expr(b, l + 1, -1));
+    r = p && map_arguments_3(b, l + 1) && r;
+    exit_section_(b, l, m, r, p, null);
+    return r || p;
+  }
+
+  // (COMMA expr COLON expr)*
+  private static boolean map_arguments_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_arguments_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!map_arguments_3_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "map_arguments_3", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA expr COLON expr
+  private static boolean map_arguments_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "map_arguments_3_0")) return false;
+    boolean r, p;
+    Marker m = enter_section_(b, l, _NONE_);
+    r = consumeToken(b, COMMA);
     r = r && expr(b, l + 1, -1);
+    p = r; // pin = 2
+    r = r && report_error_(b, consumeToken(b, COLON));
+    r = p && expr(b, l + 1, -1) && r;
     exit_section_(b, l, m, r, p, null);
     return r || p;
   }

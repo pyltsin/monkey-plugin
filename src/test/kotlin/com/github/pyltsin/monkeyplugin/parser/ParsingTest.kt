@@ -11,6 +11,10 @@ class ParsingTest : ParsingTestCase("", "monkey", MonkeyParserDefinition()) {
         doTest(true)
     }
 
+    fun testFibonacci() {
+        doTest(true)
+    }
+
     override fun skipSpaces(): Boolean {
         return false
     }

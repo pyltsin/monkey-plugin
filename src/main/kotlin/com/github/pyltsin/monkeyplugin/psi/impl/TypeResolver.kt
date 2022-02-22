@@ -21,6 +21,24 @@ object TypeResolver {
             }
         )
         rule(
+            clazz = MonkeyMapExpr::class.java,
+            negativeResult = negativeResult,
+            classedRules = {
+                runRule {
+                    MonkeyTypeResolvedResult(MAP_TYPE, null)
+                }
+            }
+        )
+        rule(
+            clazz = MonkeyArrayExpr::class.java,
+            negativeResult = negativeResult,
+            classedRules = {
+                runRule {
+                    MonkeyTypeResolvedResult(ARRAY_TYPE, null)
+                }
+            }
+        )
+        rule(
             clazz = MonkeyFuncExpr::class.java,
             negativeResult = negativeResult,
             classedRules = {

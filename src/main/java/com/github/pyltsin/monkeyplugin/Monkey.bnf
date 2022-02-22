@@ -149,7 +149,7 @@ argument ::= expr
 
 array_expr ::= LBRACKET arguments RBRACKET  {pin = 1}
 map_expr ::= LBRACE  map_arguments? RBRACE  {pin = 1}
-map_arguments ::= (expr COLON expr)*  {pin(".*")=2}
+map_arguments ::= expr COLON expr (COMMA expr COLON expr)*  {pin(".*")=2}
 
 simple_ref_expr ::= IDENT {methods=[getReference resolve setName] }
 
